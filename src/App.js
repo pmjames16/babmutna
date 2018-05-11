@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import TodayMenu from './components/TodayMenu/TodayMenu'
-import Calendar from './components/Calendar/Calendar'
+import CalendarTemplate from "./components/Calendar/CalendarTemplate";
 import Recipe from './components/Recipe/Recipe'
 import About from './components/About/About'
+import Header from './components/Header'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      body: 'Home'
+      body: 'Calendar'
     }
   }
 
@@ -21,18 +22,17 @@ class App extends Component {
 
   render() {
     let body = null
-    if ( this.state.body === 'Calendar' ) { body = <Calendar /> }
+    if ( this.state.body === 'Calendar' ) { body = <CalendarTemplate /> }
     else if ( this.state.body === 'Recipe' ) { body = <Recipe /> }
     else if ( this.state.body === 'About' ) { body = <About /> }
     else { body = <TodayMenu /> }
 
     return (
-      // <div className="bg-secondary">
       <div className="App">
-        <Navbar changeScreen={this.changeScreen}/>
+        {/* <Navbar changeScreen={this.changeScreen}/> */}
+        <Header />
         {body}
       </div>
-      // </div>
     );
   }
 }
