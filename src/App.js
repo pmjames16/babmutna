@@ -5,19 +5,27 @@ import TodayMenu from './components/TodayMenu/TodayMenu'
 import CalendarTemplate from "./components/Calendar/CalendarTemplate";
 import Recipe from './components/Recipe/Recipe'
 import About from './components/About/About'
-import Header from './components/Header'
+import Header from './components/Header/Header'
+import Menu from './components/Header/Menu'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      body: 'Calendar'
+      body: 'Calendar',
+      menu: false,
     }
   }
 
   changeScreen = (screen) => {
     this.setState({ body: screen })
+  }
+
+  toggleMenu = () => {
+    this.setState(prevState => {
+      return { menu: !prevState.menu }
+    })
   }
 
   render() {
@@ -30,8 +38,9 @@ class App extends Component {
     return (
       <div className="App">
         {/* <Navbar changeScreen={this.changeScreen}/> */}
-        <Header />
+        <Header toggleMenu={this.toggleMenu}/>
         {body}
+        {this.state.menu? <Menu /> : null}
       </div>
     );
   }
