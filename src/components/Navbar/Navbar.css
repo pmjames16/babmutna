@@ -1,9 +1,15 @@
+.nav {
+  height: 80px;
+}
+
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  background-color: pink;
+  height: 60px;
 }
 
 #wrapper.toggled {
@@ -14,7 +20,7 @@
   z-index: 1000;
   left: calc(50% - 180px);
   width: 0;
-  height: 100%;
+  height: 640px;
   margin-left: 0px;
   overflow-y: auto;
   overflow-x: hidden;
