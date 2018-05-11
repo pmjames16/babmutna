@@ -1,21 +1,5 @@
 import React, { Component } from "react";
 import "./TodayMenu.css";
-import styled from "styled-components";
-
-const TodayWrapper = styled.div`
-  width: 344px;
-  height: 417px;
-  display: flex;
-  grid-template-columns: 135px 209px;
-  grid-template-rows: 49px 125px;
-  margin: 10px 8px;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-`;
-
-const TodayMenu = styled.div``;
-const Chefs = styled.div``;
-const User = styled.div``;
 
 class TodayMenu extends Component {
   state = {
@@ -48,36 +32,43 @@ class TodayMenu extends Component {
     const { day, recipe, users, image } = this.state;
 
     return (
-      <div className="today-menu">
-        <div className />
-        <div className />
-        <div className="date">4/01</div>
-        <div className="recipe-wrapper">
-          <img className="image" src={image} alt={recipe} />
-          <div className="overlay">
-            <div className="recipe">{recipe}</div>
-            <div className="day">{day}</div>
+      <div className="todaymenu-wrapper">
+        <div className="todaymenu-title-wrapper">
+          <div className="todaymenu-title">Today's Menu</div>
+          <div className="todaymenu-date">04/01</div>
+        </div>
+        <div className="todaymenu-recipe-wrapper">
+          <img className="todaymenu-image" src={image} alt={recipe} />
+          <div className="todaymenu-overlay">
+            <div className="todaymenu-recipe">{recipe}</div>
+            <div className="todaymenu-day">{day}</div>
           </div>
         </div>
-        <div className="Chefs">
-          <div className="Chef">Senior Chef</div>
-          <div className="user-wrapper" key={users.senior.name}>
+        <div className="todaymenu-users-wrapper">
+          <div className="todaymenu-user-title">Senior Chef</div>
+          <div className="todaymenu-user-wrapper" key={users.senior.name}>
             <img
-              className="user-image"
+              className="todaymenu-user-image"
               src={users.senior.image}
               alt={users.senior.name}
             />
-            <div className="user-name">{users.senior.name}</div>
+            <div className="todaymenu-user-name">{users.senior.name}</div>
           </div>
         </div>
-        <div className="Chefs">
-          <div className="Chef">Junior Chef</div>
-          {users.junior.map(user => (
-            <div className="user-wrapper" key={user.name}>
-              <img className="user-image" src={user.image} alt={user.name} />
-              <div className="user-name">{user.name}</div>
-            </div>
-          ))}
+        <div className="todaymenu-users-wrapper">
+          <div className="todaymenu-user-title">Junior Chef</div>
+          <div className="todaymenu-user-wrapper-wrapper">
+            {users.junior.map(user => (
+              <div className="todaymenu-user-wrapper" key={user.name}>
+                <img
+                  className="todaymenu-user-image"
+                  src={user.image}
+                  alt={user.name}
+                />
+                <div className="todaymenu-user-name">{user.name}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

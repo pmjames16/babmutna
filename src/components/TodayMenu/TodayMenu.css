@@ -1,0 +1,89 @@
+.todaymenu-wrapper {
+  width: 344px;
+  height: 417px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 8px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.todaymenu-users-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+  padding-bottom: 9px;
+}
+.todaymenu-user-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  margin-right: 30px;
+}
+.todaymenu-user-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+}
+.todaymenu-user-name {
+  padding-left: 7px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.todaymenu-recipe-wrapper {
+  width: 320px;
+  height: 197px;
+  cursor: pointer;
+  margin: 0 auto;
+  margin-bottom: 27px;
+}
+.todaymenu-recipe-wrapper:hover .overlay {
+  background: rgba(0,0,0,0.7);
+}
+.todaymenu-image {
+  display: block;
+  width: 320px;
+  height: 197px;
+  margin-top: 12px;
+}
+.todaymenu-overlay {
+  position: relative;
+  height: 70px;
+  width: 320px;
+  transition: .3s ease;
+  background: rgba(0,0,0,0.5);
+  top: -70px;
+  color: white;
+  font-weight: 400;
+  padding-left: 16px;
+  padding-top: 10px;
+}
+.todaymenu-recipe {
+  font-size: 24px;
+}
+.todaymenu-day {
+  font-size: 14px;
+}
+.todaymenu-title-wrapper{
+  display: flex;
+  align-items: flex-end;
+}
+.todaymenu-title {
+  font-size: 24px;
+  font-weight: 500;
+  padding-left: 12px;
+  padding-top: 15px;
+}
+.todaymenu-date {
+  padding-left: 116px;
+  padding-top: 13px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.todaymenu-user-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+.todaymenu-user-wrapper-wrapper {
+  display: flex;
+  align-items: center;
+}
