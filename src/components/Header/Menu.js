@@ -5,8 +5,8 @@ class Menu extends Component {
   render() {
     return (
       <div className="menu">
-        <ul className="nav sidebar-nav">
-          <li className="sidebar-brand">
+        <ul className="">
+          <li className="">
           <a href="#">Davidee</a>
           </li>
           <li>

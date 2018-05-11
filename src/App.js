@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   changeScreen = (screen) => {
-    this.setState({ body: screen })
+    this.setState({ body: screen, menu: false })
   }
 
   toggleMenu = () => {
@@ -40,7 +40,7 @@ class App extends Component {
         {/* <Navbar changeScreen={this.changeScreen}/> */}
         <Header toggleMenu={this.toggleMenu}/>
         {body}
-        {this.state.menu? <Menu /> : null}
+        {this.state.menu? <Menu  changeScreen={this.changeScreen}/> : null}
       </div>
     );
   }
