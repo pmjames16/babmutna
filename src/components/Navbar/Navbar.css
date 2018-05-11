@@ -160,7 +160,7 @@ display: none;
 /*       Hamburger-Cross         */
 /*-------------------------------*/
 
-.hamburger {
+/* .hamburger {
 position: fixed;
 top: 20px;
 z-index: 1001;
@@ -175,7 +175,7 @@ border: none;
 .hamburger:focus,
 .hamburger:active {
 outline: none;
-}
+} */
 .hamburger.is-closed:before {
 content: '';
 display: block;

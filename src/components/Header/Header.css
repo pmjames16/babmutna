@@ -15,8 +15,8 @@
   height: 16px;
   margin-left: 12px;
   margin-right: 10px;
-  margin-bottom: -2px;
   cursor: pointer;
+  position: relative;
 }
 .header {
   text-align: center;
