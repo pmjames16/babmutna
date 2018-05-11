@@ -40,7 +40,11 @@ class App extends Component {
         {/* <Navbar changeScreen={this.changeScreen}/> */}
         <Header toggleMenu={this.toggleMenu}/>
         {body}
-        {this.state.menu? <Menu  changeScreen={this.changeScreen}/> : null}
+        {this.state.menu? 
+          <Menu 
+            changeScreen={this.changeScreen}
+            toggleMenu={this.toggleMenu}
+          /> : null}
       </div>
     );
   }

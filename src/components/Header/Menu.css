@@ -1,5 +1,42 @@
 .menu {
   background-color: black;
   position: absolute;
-  top: 0;
+  top: 10px;
+  left: calc(50% - 180px);
+  z-index: 10;
+  width: 360px;
+  height: 100%;
+  opacity: 0.9;
+}
+
+.menu-cancel-button {
+  font-size: 40px;
+  margin-top: 10px;
+  margin-right: 20px;
+  float: right;
+  color: white;
+  cursor: pointer;
+}
+
+.menu-list {
+  margin-top: 30px;
+  color: white;
+  font-size: 20px;
+  list-style-type: none;
+  line-height: 2;
+}
+
+.menu-user-name {
+  font-size: 30px;
+  cursor: default;
+}
+
+.menu-link {
+  color: white;
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  text-decoration: none;
+  color: white;
 }

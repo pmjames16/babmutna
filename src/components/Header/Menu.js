@@ -1,25 +1,26 @@
 import React, { Component } from "react";
-// import "./Calendar.css";
+import "./Menu.css";
 
 class Menu extends Component {
   render() {
     return (
       <div className="menu">
-        <ul className="">
-          <li className="">
-          <a href="#">Davidee</a>
+        <i class="fas fa-times menu-cancel-button" onClick={this.props.toggleMenu}></i>
+        <ul className="menu-list">
+          <li className="menu-user-name">
+            <a className="menu-link" href="#">Davidee</a>
           </li>
           <li>
-          <a onClick={() => this.props.changeScreen('Home')}>Home</a>
+            <a className="menu-link" onClick={() => this.props.changeScreen('Home')}>Home</a>
           </li>
           <li>
-          <a onClick={() => this.props.changeScreen('Calendar')}>Calendar</a>
+            <a className="menu-link" onClick={() => this.props.changeScreen('Calendar')}>Calendar</a>
           </li>
           <li>
-          <a onClick={() => this.props.changeScreen('Recipe')}>Recipe</a>
+            <a className="menu-link" onClick={() => this.props.changeScreen('Recipe')}>Recipe</a>
           </li>
           <li>
-          <a onClick={() => this.props.changeScreen('About')}>About</a>
+            <a className="menu-link" onClick={() => this.props.changeScreen('About')}>About</a>
           </li>
         </ul>
       </div>
