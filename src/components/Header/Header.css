@@ -10,13 +10,35 @@
 }
 
 .hamburger {
-  background: white;
+  background: transparent;
   width: 20px;
   height: 16px;
   margin-left: 12px;
   margin-right: 10px;
   cursor: pointer;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.hamburger-top {
+  width: 100%;
+  height: 3px;
+  background: white;
+  margin-bottom: 3.5px;
+}
+.hamburger-mid {
+  width: 100%;
+  height: 3px;
+  background: white;
+}
+.hamburger-bot {
+  width: 100%;
+  height: 3px;
+  background: white;
+  margin-top: 3.5px;
 }
 .header {
   text-align: center;
