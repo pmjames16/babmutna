@@ -48,7 +48,7 @@
   width: 320px;
   transition: .3s ease;
   background: rgba(0,0,0,0.5);
-  top: -110px;
+  top: -106px;
   color: white;
   font-weight: 400;
   padding-left: 16px;
@@ -94,9 +94,10 @@
   position: relative;
   width: 140px;
   padding: 0;
-  height: 40px;
+  height: 36px;
   top: -197px;
   display: flex;
+  margin-left: 180px;
   justify-content: center;
   align-items: center;
   color:white;
@@ -105,16 +106,16 @@
 }
 
 .todaymenu-dinner-yes {
-  background: #8BC34A;
+  background: #40c057;
   transition: .3s ease;
 }
 .todaymenu-dinner-yes:hover {
-  background:#C62828;
+  background:#2b8a3e;
 }
 .todaymenu-dinner-no {
-  background: #C62828;
+  background: #f03e3e;
   transition: .3s ease;
 }
 .todaymenu-dinner-no:hover {
-  background: #8BC34A;
+  background: #c92a2a;
 }
