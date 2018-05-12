@@ -4,7 +4,6 @@ import "./TodayMenu.css";
 class TodayMenu extends Component {
   state = {
     day: "Monday",
-    recipe: "Beef Curry",
     users: {
       senior: {
         name: "Arif Hadii",
@@ -24,13 +23,11 @@ class TodayMenu extends Component {
         }
       ]
     },
-    image:
-      "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
   };
 
   render() {
-    const { day, recipe, users, image } = this.state;
-    const { dinner_ready, onClickReady } = this.props;
+    const { day, users } = this.state;
+    const { dinner_ready, onClickReady, recipe, selectTodayRecipe } = this.props;
 
     return (
       <div className="todaymenu-wrapper">
@@ -39,7 +36,7 @@ class TodayMenu extends Component {
           <div className="todaymenu-date">04/01</div>
         </div>
         <div className="todaymenu-recipe-wrapper">
-          <img className="todaymenu-image" src={image} alt={recipe} />
+          <img onClick={selectTodayRecipe} className="todaymenu-image" src={recipe.image} alt={recipe.name} />
           <div
             onClick={onClickReady}
             className={`todaymenu-dinner-${dinner_ready} dinner-ready`}
@@ -47,7 +44,7 @@ class TodayMenu extends Component {
             {dinner_ready === "yes" ? "Dinner's Ready" : "Cooking Dinner"}
           </div>
           <div className="todaymenu-overlay">
-            <div className="todaymenu-recipe">{recipe}</div>
+            <div className="todaymenu-recipe">{recipe.name}</div>
             <div className="todaymenu-day">{day}</div>
           </div>
         </div>

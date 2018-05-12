@@ -4,8 +4,6 @@ class RecipeHeader extends Component {
     constructor(props) {
         super(props)
         this.onClick = this.onClick.bind(this)
-        this.state = {
-        }
     }
 
     onClick = (key) => {
