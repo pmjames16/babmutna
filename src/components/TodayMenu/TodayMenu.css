@@ -51,7 +51,7 @@
   width: 320px;
   transition: .3s ease;
   background: rgba(0,0,0,0.5);
-  top: -70px;
+  top: -110px;
   color: white;
   font-weight: 400;
   padding-left: 16px;
@@ -86,4 +86,27 @@
 .todaymenu-user-wrapper-wrapper {
   display: flex;
   align-items: center;
+}
+
+/* Dinner's Ready */
+
+.dinner-ready {
+  position: relative;
+  width: 140px;
+  padding: 0;
+  height: 40px;
+  top: -197px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.todaymenu-dinner-yes {
+  background: #8BC34A;
+}
+.todaymenu-dinner-no {
+  background: #C62828;
 }

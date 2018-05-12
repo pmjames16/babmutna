@@ -14,6 +14,7 @@ class App extends Component {
 
     this.state = {
       body: "Calendar",
+      dinner_ready: "yes",
       menu: false
     };
   }
@@ -27,17 +28,29 @@ class App extends Component {
       return { menu: !prevState.menu };
     });
   };
+  handleDinnerReady = () => {
+    this.setState({
+      dinner_ready: "yes"
+    });
+  };
 
   render() {
     let body = null;
+    let { dinner_ready } = this.state;
+    const handleDinnerReady = this;
     if (this.state.body === "Calendar") {
-      body = <CalendarTemplate />;
+      body = <CalendarTemplate dinner_ready={dinner_ready} />;
     } else if (this.state.body === "Recipe") {
       body = <Recipe />;
     } else if (this.state.body === "About") {
       body = <About />;
     } else {
-      body = <TodayMenu />;
+      body = (
+        <TodayMenu
+          dinner_ready={dinner_ready}
+          onClickReady={handleDinnerReady}
+        />
+      );
     }
 
     return (
