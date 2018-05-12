@@ -14,7 +14,7 @@ class App extends Component {
 
     this.state = {
       body: "Calendar",
-      dinner_ready: "yes",
+      dinner_ready: "no",
       menu: false
     };
   }
@@ -30,14 +30,13 @@ class App extends Component {
   };
   handleDinnerReady = () => {
     this.setState({
-      dinner_ready: "yes"
+      dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
     });
   };
 
   render() {
     let body = null;
     let { dinner_ready } = this.state;
-    const handleDinnerReady = this;
     if (this.state.body === "Calendar") {
       body = <CalendarTemplate dinner_ready={dinner_ready} />;
     } else if (this.state.body === "Recipe") {
@@ -48,7 +47,7 @@ class App extends Component {
       body = (
         <TodayMenu
           dinner_ready={dinner_ready}
-          onClickReady={handleDinnerReady}
+          onClickReady={this.handleDinnerReady}
         />
       );
     }

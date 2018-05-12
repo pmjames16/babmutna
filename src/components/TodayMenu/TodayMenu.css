@@ -36,9 +36,6 @@
   margin: 0 auto;
   margin-bottom: 27px;
 }
-.todaymenu-recipe-wrapper:hover .overlay {
-  background: rgba(0,0,0,0.7);
-}
 .todaymenu-image {
   display: block;
   width: 320px;
@@ -55,7 +52,10 @@
   color: white;
   font-weight: 400;
   padding-left: 16px;
-  padding-top: 10px;
+  padding-top: 8px;
+}
+.todaymenu-overlay:hover {
+  background: rgba(0,0,0,0.7);
 }
 .todaymenu-recipe {
   font-size: 24px;
@@ -106,7 +106,15 @@
 
 .todaymenu-dinner-yes {
   background: #8BC34A;
+  transition: .3s ease;
+}
+.todaymenu-dinner-yes:hover {
+  background:#C62828;
 }
 .todaymenu-dinner-no {
   background: #C62828;
+  transition: .3s ease;
+}
+.todaymenu-dinner-no:hover {
+  background: #8BC34A;
 }
