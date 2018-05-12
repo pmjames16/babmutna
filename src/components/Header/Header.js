@@ -5,6 +5,7 @@ class Header extends Component {
   render() {
     return (
       <div className="header-wrapper">
+        <div className="frame" />
         <div className="hamburger" onClick={this.props.toggleMenu}>
           <div className="hamburger-top" />
           <div className="hamburger-mid" />

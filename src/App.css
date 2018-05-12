@@ -9,12 +9,3 @@
   align-items: center;
   font-family: Roboto;
 }
-.frame {
-  position: fixed;
-  margin: 0 auto;
-  margin-top: -10px;
-  width: 400px;
-  background: white;
-  height: 10px;
-  z-index: 1;
-}

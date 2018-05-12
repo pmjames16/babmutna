@@ -55,7 +55,6 @@ class App extends Component {
     return (
       <div className="App">
         {/* <Navbar changeScreen={this.changeScreen}/> */}
-        <div className="frame" />
         <Header toggleMenu={this.toggleMenu} />
         {body}
         {this.state.menu ? (

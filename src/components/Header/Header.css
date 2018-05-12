@@ -57,3 +57,12 @@
   border-radius: 16px;
   cursor: pointer;
 }
+.frame {
+  position: fixed;
+  margin: -27px 50px 0 -50px;
+  margin-top: -27px;
+  width: 1000px;
+  background: white;
+  height: 10px;
+  z-index: 1;
+}
