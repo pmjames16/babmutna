@@ -10,14 +10,14 @@ import Menu from "./components/Header/Menu";
 class App extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             dinner_ready: "no",
             body: "Home",
             menu: false,
-            recipeId:-1,
-            recipeState:0,
-            todayRecipe:0
+            recipeId:-1,//The index of recipe
+            recipeState:0,//0 is whole recipe, 1 is detail, should set RecipeId
+            todayRecipe:0,//The index of recipe
+            users:users,
         };
     }
 
@@ -51,10 +51,10 @@ class App extends Component {
         });
     };
 
-    selectTodayRecipe = () => {
+    selectRecipeOtherMenu = (key) => {
         this.setState({
             recipeState: 1,
-            recipeId: this.state.todayRecipe,
+            recipeId: key,
             body:"RecipeTemplate"
         });
     };
@@ -69,10 +69,15 @@ class App extends Component {
 
     render() {
         let body = null;
-        let { dinner_ready ,recipeId, recipeState, todayRecipe} = this.state;
+        const { dinner_ready ,recipeId, recipeState, todayRecipe, users} = this.state;
+        const todayUsers = users.slice(0,3);
 
         if (this.state.body === "Calendar") {
-            body = <CalendarTemplate dinner_ready={dinner_ready} />;
+            body = <CalendarTemplate
+                users = {users}
+                recipes = {recipes}
+                selectRecipeOtherMenu = {this.selectRecipeOtherMenu}
+            />;
         } else if (this.state.body === "RecipeTemplate") {
             body = <RecipeTemplate
                 recipes = {recipes}
@@ -88,8 +93,9 @@ class App extends Component {
                 <TodayMenu
                     recipe = {recipes[todayRecipe]}
                     index = {todayRecipe}
+                    todayUsers = {todayUsers}
                     dinner_ready={dinner_ready}
-                    selectTodayRecipe = {this.selectTodayRecipe}
+                    selectRecipeOtherMenu = {this.selectRecipeOtherMenu}
                     onClickReady={this.handleDinnerReady}
                 />
             );
@@ -202,5 +208,30 @@ const recipes = [{
                 image:"https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb"
             }
         ]}];
-
+const users = [
+    {
+        name: "Arif Hadii",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait1.jpg?alt=media&token=ca4a4b01-493e-4a4a-a8ea-a750832a94cc",
+        skill:"senior"
+    },{
+        name: "Davidee",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait2.jpg?alt=media&token=6d444da9-d56d-4437-a665-bc5552d38d2d",
+        skill:"junior"
+    },{
+        name: "Etranger",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait4.jpg?alt=media&token=155b7575-d3dc-4c59-8b5d-39bbd3c1ad77",
+        skill:"junior"
+    },{
+        name: "James",
+        image: "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg",
+        skill:"senior"
+    },{
+        name: "Sabagi",
+        image: "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg",
+        skill:"junior"
+    },{
+        name: "Jungho",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait3.jpg?alt=media&token=3817a915-a0c4-4147-80fe-5937df8dcfe8",
+        skill:"junior"
+    },];
 export default App;

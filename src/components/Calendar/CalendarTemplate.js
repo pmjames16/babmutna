@@ -2,196 +2,45 @@ import React, { Component } from "react";
 import "./CalendarTemplate.css";
 import Calendar from './Calendar'
 
-
-const recipe = {
-  recipe_list: [
-    {
-      day: "Monday",
-      recipe: "Beef Curry",
-      users: [
-        {
-          name: "Arif Hadii",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "Davidee",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "Suho Park",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Tuesday",
-      recipe: "Potato Curry",
-      users: [
-        {
-          name: "User1",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User2",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User3",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Wednesday",
-      recipe: "Hot Beef Curry",
-      users: [
-        {
-          name: "User4",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User5",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User6",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Thursday",
-      recipe: "Chili Curry",
-      users: [
-        {
-          name: "User7",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User8",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User9",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Friday",
-      recipe: "Special Chicken",
-      users: [
-        {
-          name: "User10",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User11",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User12",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Saturday",
-      recipe: "Saturday Curry",
-      users: [
-        {
-          name: "User13",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User14",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User15",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    },
-    {
-      day: "Sunday",
-      recipe: "Sunday Curry",
-      users: [
-        {
-          name: "User16",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User17",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        },
-        {
-          name: "User18",
-          image:
-            "https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
-        }
-      ],
-      image:
-        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/3/1/0/FNM_040111-WN-Dinners-030_s4x3.jpg.rend.hgtvcom.616.462.suffix/1371595164628.jpeg"
-    }
-  ]
-};
-
 class CalendarTemplate extends Component {
 
-  handleRecipe = () => {
-    const { recipe_list } = recipe;
-    const calendar_list = recipe_list.map(data => (
-      <Calendar
-        day={data.day}
-        recipe={data.recipe}
-        users={data.users}
-        key={data.day}
-        image={data.image}
-      />
-    ));
-    return calendar_list;
-  };
+    calendarMapping = () => {
+        const { users, recipes, selectRecipeOtherMenu } = this.props;
+        const currentDate = new Date();
+        let weeks = [];
+        for(let i = 0;i<7;i++){
+            let day = new Date();
+            day.setDate(currentDate.getDate()+i);
+            weeks.push(day);
+        }
+        const calendar_list = weeks.map((day,index)=>{
+            let dayUser = users.slice(((index*3)%users.length),((index*3)%users.length+3));
+            let count = 0;
+            while(dayUser.length < 3){
+                dayUser.push(users[count]);
+                count++;
+            };
+            return (
+                <Calendar
+                    date={day}
+                    recipe={recipes[index%(recipes.length)]}
+                    users={dayUser}
+                    key={index}
+                    recipeIndex = {index%(recipes.length)}
+                    selectRecipeOtherMenu = {selectRecipeOtherMenu}
+                />
+            );
+        });
+        return calendar_list;
+    };
 
-  render() {
-    return (
-      <div className="calendar-template">
-        {this.handleRecipe()}
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="calendar-template">
+                {this.calendarMapping()}
+            </div>
+        );
+    }
 }
 
 export default CalendarTemplate;
