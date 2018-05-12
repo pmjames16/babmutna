@@ -1,6 +1,6 @@
 .menu {
   background-color: black;
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: calc(50% - 180px);
   z-index: 10;
