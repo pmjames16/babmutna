@@ -5,22 +5,39 @@ class Menu extends Component {
   render() {
     return (
       <div className="menu">
-        <i className="fas fa-times menu-cancel-button" onClick={this.props.toggleMenu}></i>
+        <i
+          className="fas fa-times menu-cancel-button"
+          onClick={this.props.toggleMenu}
+        />
         <ul className="menu-list">
           <li className="menu-user-name">
-            <a className="menu-link" href="#">Davidee</a>
+            <a className="menu-link" href="#">
+              Davidee
+            </a>
           </li>
           <li>
-            <a className="menu-link" onClick={() => this.props.changeScreen('Home')}>Home</a>
+            <a
+              className="menu-link"
+              onClick={() => this.props.changeScreen("Home")}
+            >
+              Home
+            </a>
           </li>
           <li>
-            <a className="menu-link" onClick={() => this.props.changeScreen('Calendar')}>Calendar</a>
+            <a
+              className="menu-link"
+              onClick={() => this.props.changeScreen("Calendar")}
+            >
+              Calendar
+            </a>
           </li>
           <li>
-            <a className="menu-link" onClick={() => this.props.changeScreen('RecipeTemplate')}>Recipe</a>
-          </li>
-          <li>
-            <a className="menu-link" onClick={() => this.props.changeScreen('About')}>About</a>
+            <a
+              className="menu-link"
+              onClick={() => this.props.changeScreen("RecipeTemplate")}
+            >
+              Recipe
+            </a>
           </li>
         </ul>
       </div>

@@ -3,7 +3,6 @@ import "./App.css";
 import TodayMenu from "./components/TodayMenu/TodayMenu";
 import CalendarTemplate from "./components/Calendar/CalendarTemplate";
 import RecipeTemplate from "./components/Recipe/RecipeTemplate";
-import About from "./components/About/About";
 import Header from "./components/Header/Header";
 import Menu from "./components/Header/Menu";
 
@@ -95,8 +94,6 @@ class App extends Component {
           wholeRecipe={this.wholeRecipe}
         />
       );
-    } else if (this.state.body === "About") {
-      body = <About />;
     } else {
       body = (
         <TodayMenu
