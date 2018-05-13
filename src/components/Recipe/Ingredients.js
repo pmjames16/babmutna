@@ -34,6 +34,7 @@ class Ingredients extends Component {
 const styles = {
     header:{
         display:"flex",
+        marginTop:10
     },
 };
 export default Ingredients;

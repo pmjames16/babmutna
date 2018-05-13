@@ -16,11 +16,11 @@ class Ingredient extends Component {
 
     render() {
         const { ingredient } = this.props;
-        const readyStyle = this.state.isReady ? { "textDecoration":"line-through","color":"gray"}:{};
+        const readyStyle = this.state.isReady ? { "color":"gray"}:{};
         return (
             <div>
             <span  onClick={this.onClick} style={{cursor:"pointer"}}>
-                <i style={{color:"#f59f00"}} className={this.state.isReady ? "fa fa-check-square":"fa fa-square"}/>
+                <i style={{color:"#f59f00", fontSize:16}} className={this.state.isReady ? "fa fa-check-square":"fa fa-square"}/>
                 <span style={{...styles.text,...readyStyle }}>{ingredient}</span>
             </span>
             </div>
@@ -32,7 +32,7 @@ const styles = {
         fontWeight:400,
         fontSize:16,
         fontFamily:"Helvetica, Arial, Sans-serif",
-        lineHeight:"1.6",
+        lineHeight:"2.5",
         marginBottom:10,
         marginLeft:5
     },

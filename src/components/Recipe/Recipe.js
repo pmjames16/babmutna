@@ -33,7 +33,7 @@ class Recipe extends Component {
                     headerS = {styles.header}
                     iconS = {styles.icon}
                 />
-                <div style={{...styles.header,display:"block"}}>
+                <div style={{...styles.header,display:"block", marginTop:10}}>
                     Tasks
                     {tasks}
                 </div>
