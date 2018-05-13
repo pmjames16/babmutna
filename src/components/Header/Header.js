@@ -11,6 +11,13 @@ class Header extends Component {
             alt={currentUser.name}
             className="user-self"
         /></div>:<div onClick={toggleLogin} style={styles.login}>Login</div>;
+        let headertitle;
+        if(title === "HOME")
+            headertitle = "Babmutna";
+        else if(title === "RecipeTemplate")
+            headertitle = "Recipe";
+        else
+            headertitle = title;
         return (
             <div className="header-wrapper">
                 <div className="frame" />
@@ -19,7 +26,7 @@ class Header extends Component {
                     <div className="hamburger-mid" />
                     <div className="hamburger-bot" />
                 </div>
-                <div className="header">{title === "Home" ? "Babmutna" : title}</div>
+                <div className="header">{headertitle}</div>
                 {logintab}
             </div>
         );

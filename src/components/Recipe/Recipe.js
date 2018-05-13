@@ -16,6 +16,7 @@ class Recipe extends Component {
             <div style={styles.boxS}>
                 <div style={{cursor:"default", marginBottom:15}} className="todaymenu-recipe-wrapper">
                     <a target="_blank" href={recipe.video}><img style={{margin:0}} className="todaymenu-image" src={recipe.image} alt={recipe.name}  /></a>
+                    <i style={styles.video} className="fa fa-video"/>
                     <div style = {styles.overlay}>
                         <div >{recipe.name}</div>
                         <i style={styles.icon} className="fa fa-reply"
@@ -61,13 +62,11 @@ const styles = {
         height: 70,
         width: 320,
         position:"relative",
-        top:"-70px",
+        top:"-100px",
         transition: ".3s ease",
         background: "rgba(0,0,0,0.5)",
         color:"white",
         fontWeight: 400,
-
-
     },
     header: {
         fontWeight: 800,
@@ -76,6 +75,13 @@ const styles = {
         marginBottom:5
     },
     icon:{marginLeft:"auto",padding:"8px 10px 0px 0px", cursor:"pointer"},
+    video:{
+        position:"relative",
+        fontSize:30,
+        left:280,
+        top:"-190px",
+        opacity:0.5,
+    }
 
 };
 export default Recipe;
