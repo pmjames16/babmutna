@@ -12,7 +12,7 @@ class Header extends Component {
           <div className="hamburger-mid" />
           <div className="hamburger-bot" />
         </div>
-        <div className="header">{title}</div>
+        <div className="header">{title === "Home" ? "Babmutna" : title}</div>
         <img
           src="https://i.pinimg.com/736x/b9/22/92/b92292fad977b7537b0912f3a725add4--human-faces-north-western.jpg"
           alt="Davidee"
