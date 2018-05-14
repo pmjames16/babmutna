@@ -1,0 +1,67 @@
+.trade-wrapper {
+    width: 344px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.trade-title {
+    font-size: 24px;
+    font-weight: 500;
+    padding-left: 12px;
+    padding-top: 15px;
+}
+.content-wrapper {
+    padding-left: 12px;
+    padding-top: 5px;
+}
+.fromto-wrapper {
+
+
+}
+.calendar-icon {
+    font-size: 25px;
+    float: right;
+    margin-right: 20px;
+}
+.fromto-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+.trade-users-wrapper {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 60px;
+    display: flex;
+    margin: 4px 0;
+    align-items: center;
+}
+.send-button-wrapper {
+    display: block;
+}
+.send-button {
+    float: right;
+    margin-right: 10px;
+    font-size: 12px;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+.send-button:disabled {
+    color: grey;
+}
+.trade-user-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+}
+.trade-user-name {
+    padding-left: 7px;
+    font-size: 16px;
+    font-weight: 500;
+}

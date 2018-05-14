@@ -7,6 +7,7 @@ import Header from "./components/Header/Header";
 import Menu from "./components/Header/Menu";
 import Login from "./components/Header/Login";
 import Alarm from "./components/Header/Alarm";
+import Trade from "./components/Trade/Trade";
 
 class App extends Component {
   constructor(props) {
@@ -144,14 +145,20 @@ class App extends Component {
       );
     } else {
       body = (
-        <TodayMenu
-          recipe={recipes[todayRecipe]}
-          index={todayRecipe}
-          todayUsers={todayUsers}
-          dinner_ready={dinner_ready}
-          selectRecipeOtherMenu={this.selectRecipeOtherMenu}
-          onClickReady={this.handleDinnerReady}
-        />
+        <div>
+          <TodayMenu
+            recipe={recipes[todayRecipe]}
+            index={todayRecipe}
+            todayUsers={todayUsers}
+            dinner_ready={dinner_ready}
+            selectRecipeOtherMenu={this.selectRecipeOtherMenu}
+            onClickReady={this.handleDinnerReady}
+          />
+          <Trade
+            users={users}
+            currentUser={currentUser}
+          />
+        </div>
       );
     }
 
