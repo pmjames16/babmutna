@@ -154,10 +154,7 @@ class App extends Component {
             selectRecipeOtherMenu={this.selectRecipeOtherMenu}
             onClickReady={this.handleDinnerReady}
           />
-          <Trade
-            users={users}
-            currentUser={currentUser}
-          />
+          <Trade users={users} currentUser={currentUser} />
         </div>
       );
     }
@@ -172,6 +169,7 @@ class App extends Component {
           toggleAlarm={this.toggleAlarm}
           currentUser={currentUser}
         />
+
         {body}
         {this.state.menu ? (
           <Menu
