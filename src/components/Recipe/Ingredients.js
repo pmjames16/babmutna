@@ -21,7 +21,7 @@ class Ingredients extends Component {
         };
         const view = this.state.isOpened ? ingredients.map(mapIngredient):null;
         return (
-            <div>
+            <div >
                 <div style={styles.header}>
                     <div onClick={this.onClick} style={headerS}>Ingredient</div>
                     <i style={{...iconS,fontSize:20}} onClick={this.onClick} className={this.state.isOpened ? "fa fa-caret-up":"fa fa-caret-down"}/>

@@ -22,3 +22,5 @@ yarn-error.log*
 *.xml
 *.iml
 \.idea/
+
+package-lock\.json
