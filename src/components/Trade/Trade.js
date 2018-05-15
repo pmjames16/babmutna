@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./Trade.css";
+import CalendarModal from "./CalendarModal";
+
 
 class Trade extends Component {
 
@@ -38,6 +40,7 @@ class Trade extends Component {
             </span>
           </div>
         </div>
+        <CalendarModal/>
       </div>
     );
   }

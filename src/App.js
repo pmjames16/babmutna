@@ -9,6 +9,7 @@ import Login from "./components/Header/Login";
 import Alarm from "./components/Header/Alarm";
 import Trade from "./components/Trade/Trade";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
