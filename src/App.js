@@ -8,7 +8,8 @@ import Menu from "./components/Header/Menu";
 import Login from "./components/Header/Login";
 import Alarm from "./components/Header/Alarm";
 import Trade from "./components/Trade/Trade";
-
+import Setfirebase from "./components/Admin/SetFirebase";
+import { init as initFirebase } from "./firebase";
 
 class App extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ class App extends Component {
       login: false,
       alarm: false
     };
+    initFirebase();
   }
 
   changeScreen = screen => {
@@ -144,6 +146,13 @@ class App extends Component {
           wholeRecipe={this.wholeRecipe}
         />
       );
+    } else if (this.state.body === "Admin") {
+        body = (
+            <Setfirebase
+                recipes={recipes}
+                users = {users}
+            />
+        );
     } else {
       body = (
         <div>
