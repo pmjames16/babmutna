@@ -70,7 +70,6 @@ class App extends Component {
                 recipes: recipes_,
                 users: users_,
             });
-            console.log(recipes_, users_);
         });
     }
 
@@ -170,7 +169,6 @@ class App extends Component {
             recipes
         } = this.state;
         const todayUsers = users.slice(0, 3);
-        console.log(todayRecipe, recipes[todayRecipe]);
         if (this.state.body === "Calendar") {
             body = (
                 <CalendarTemplate

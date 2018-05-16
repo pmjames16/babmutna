@@ -15,7 +15,7 @@ class Menu extends Component {
         />
         <ul className="menu-list">
           <li className="menu-user-name">
-            <a className="menu-link" href="#">
+            <a className="menu-link">
               {name}
             </a>
           </li>

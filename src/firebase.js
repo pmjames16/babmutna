@@ -9,6 +9,5 @@ export const init = () => {
         storageBucket: "babmutna-536bf.appspot.com",
         messagingSenderId: "984927166927"
     };
-    console.log("init");
     firebase.initializeApp(config);
 };
