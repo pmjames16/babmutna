@@ -2,12 +2,14 @@
 .header-wrapper {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 360px;
   height: 44px;
   background: #f59f00;
   box-shadow: 0 1px 3px rgba(0,0,0,0.4);
   font-family: Roboto;
   color: white;
+  position: fixed;
+  z-index: 300;
 }
 
 .hamburger {
