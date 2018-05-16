@@ -5,7 +5,7 @@ class Recipe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            state:1,//0 is ingrdients, 1 is task
+            state:0,//0 is ingrdients, 1 is task
         }
     }
     onClick = (state) => {
@@ -15,13 +15,18 @@ class Recipe extends Component {
     };
 
     render() {
-        const { recipe, onClick } = this.props;
+        const { recipe, onClick, headerS } = this.props;
         const mapTask = (task, index) => {
             return <Task task={task} index={index} key={index} />;
         };
         const tasks = recipe.tasks.map(mapTask);
+
         return (
             <div style={styles.boxS}>
+                <div style={{...headerS,width:"100%",margin:0,cursor: "default"}}>
+                    <div>{recipe.name}</div>
+                    <i style={styles.icon} className="fa fa-reply" onClick={onClick} />
+                </div>
                 <div
                     style={{ cursor: "default", marginBottom: 15 }}
                     className="todaymenu-recipe-wrapper"
@@ -35,10 +40,7 @@ class Recipe extends Component {
                         />
                     </a>
                     <i style={styles.video} className="fa fa-video" />
-                    <div style={styles.overlay}>
-                        <div>{recipe.name}</div>
-                        <i style={styles.icon} className="fa fa-reply" onClick={onClick} />
-                    </div>
+
                 </div>
                 <div style={styles.header}>
                     <div>Expected Time</div>
@@ -80,35 +82,23 @@ const styles = {
         boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
         padding: "12px"
     },
-
-    overlay: {
-        paddingTop: 16,
-        paddingLeft: 16,
-        cursor: "default",
-        display: "flex",
-        fontSize: 24,
-        height: 70,
-        width: 320,
-        position: "relative",
-        top: "-100px",
-        transition: ".3s ease",
-        background: "rgba(0,0,0,0.5)",
-        color: "white",
-        fontWeight: 400
-    },
     header: {
         fontWeight: 600,
         fontSize: 20,
         display: "flex",
         marginBottom: 5
     },
-    icon: { marginLeft: "auto", padding: "8px 10px 0px 0px", cursor: "pointer" },
+    icon: {
+        marginLeft: "auto",
+        padding: "8px 10px 0px 0px",
+        cursor: "pointer" },
     video: {
         position: "relative",
-        fontSize: 30,
-        left: 280,
-        top: "-190px",
-        opacity: 0.5
+        fontSize: 40,
+        left: 140,
+        top: "-120px",
+        opacity: 0.8,
+        color:"white",
     },
     tab:{
         width:"50%",
