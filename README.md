@@ -18,3 +18,6 @@ Our project support 3 tasks
 3. run `npm install`
 4. run `npm start`
 5. Enjoy
+
+## Implement
+We using react library to implement this page. Our root JS file is `src/App.js`, We Load Data from firebase after component mount. The First Page is Today Menu. it implemented in `src/components/TodayMenu/`. You can change the page using menu implemented in `src/components/Header/`. Each Page (calendar, recipes and Trade) is implemented in `src/components/Calendar` ,`src/components/Recipe` and `src/components/Trade/`
