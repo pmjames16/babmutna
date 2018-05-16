@@ -1,4 +1,4 @@
-.trade-wrapper {
+.myduty-wrapper {
     width: 344px;
     display: flex;
     flex-direction: column;
@@ -7,61 +7,43 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
-.trade-title {
+.myduty-header {
     font-size: 24px;
     font-weight: 500;
+    font-family: Roboto;
     padding-left: 12px;
     padding-top: 15px;
+    margin: 0 auto;
+}
+.slide-left {
+    align:left;
+    margin-right: 30px;
+}
+.slide-right {
+    align:right;
+    margin-left: 30px;
 }
 .content-wrapper {
-    padding-left: 12px;
     padding-top: 5px;
 }
-.fromto-wrapper {
-
-
+.calendar-wrapper {
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none;
 }
-.calendar-icon {
-    font-size: 25px;
-    float: right;
-    margin-right: 20px;
-}
-.fromto-title {
+.exchange {
+    height: 35px;
+    text-align: center;
+    font-family: Roboto;
     font-size: 20px;
-    font-weight: 500;
+    color: white;
+    background-color: #f59f00;
+    padding-top: 5px;
 }
-.trade-users-wrapper {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: 60px;
-    display: flex;
-    margin: 4px 0;
-    align-items: center;
-}
-.send-button-wrapper {
-    display: block;
-}
-.send-button {
-    float: right;
+.exchange-icon {
     margin-right: 10px;
-    font-size: 12px;
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
 }
-.send-button:disabled {
-    color: grey;
-}
-.trade-user-image {
-    width: 32px;
-    height: 32px;
-    border-radius: 16px;
-}
-.trade-user-name {
-    padding-left: 7px;
-    font-size: 16px;
-    font-weight: 500;
+
+.disabled {
+    color: lightgrey;
 }

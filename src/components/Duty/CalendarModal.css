@@ -8,11 +8,25 @@
     z-index: 2;
     display: block;
 }
-.instruction-wrapper {
+.select-button {
     margin-left: 6px;
     margin-right: 6px;
-    height: 50px;
+    height: 40px;
+    background-color: lightseagreen;
+    color: white;
+    font-size: 20px;
+    padding-top: 5px;
+    text-align: center;
+}
+.select-button-disabled {
+    margin-left: 6px;
+    margin-right: 6px;
+    height: 40px;
     background-color: #f59f00;
+    color: white;
+    font-size: 20px;
+    padding-top: 5px;
+    text-align: center;
 }
 .modal-from {
     margin-top: 50%;
@@ -25,12 +39,7 @@
 .calendar {
     margin: auto;
 }
-h1 {
+.check.icon {
     color: white;
-    font-size: 24px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding-top: 10px;
+    font-size: 20px;
 }

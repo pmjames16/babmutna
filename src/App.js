@@ -7,7 +7,9 @@ import Header from "./components/Header/Header";
 import Menu from "./components/Header/Menu";
 import Login from "./components/Header/Login";
 import Alarm from "./components/Header/Alarm";
-import Trade from "./components/Trade/Trade";
+import MyDuty from "./components/Duty/MyDuty";
+import ExchangeDuty from "./components/Duty/ExchangeDuty";
+
 
 
 class App extends Component {
@@ -25,7 +27,9 @@ class App extends Component {
         id: -1
       },
       login: false,
-      alarm: false
+      alarm: false,
+      dutySchedule: dutySchedule,
+      exchangeDate: null
     };
   }
 
@@ -67,12 +71,27 @@ class App extends Component {
     });
   };
 
+  exchangeDuty = date => {
+    this.setState({
+      body: "Exchange Duty",
+      exchangeDate: date
+    })
+  };
+
+  sendExchangeRequest = () => {
+    alert('Request Sent!')
+    this.setState({
+      body: "Home"
+    })
+  };
+
   wholeRecipe = () => {
     this.setState({
       recipeState: 0,
       recipeId: -1
     });
   };
+
 
   setCurrentUser = id => {
     if (id !== -1) {
@@ -121,7 +140,9 @@ class App extends Component {
       recipeState,
       todayRecipe,
       users,
-      currentUser
+      currentUser,
+      dutySchedule,
+      exchangeDate
     } = this.state;
     const todayUsers = users.slice(0, 3);
 
@@ -144,7 +165,17 @@ class App extends Component {
           wholeRecipe={this.wholeRecipe}
         />
       );
-    } else {
+    } else if (this.state.body === "Exchange Duty") {
+      body = (
+        <ExchangeDuty
+          currentUser={currentUser}
+          dutySchedule={dutySchedule}
+          exchangeDate={exchangeDate}
+          sendExchangeRequest={this.sendExchangeRequest}
+        />
+      )
+    }
+    else {
       body = (
         <div>
           <TodayMenu
@@ -155,7 +186,14 @@ class App extends Component {
             selectRecipeOtherMenu={this.selectRecipeOtherMenu}
             onClickReady={this.handleDinnerReady}
           />
-          <Trade users={users} currentUser={currentUser} />
+          <MyDuty
+            currentUser={currentUser}
+            dutySchedule={dutySchedule}
+            recipes={recipes}
+            selectRecipeOtherMenu={this.selectRecipeOtherMenu}
+            users={users}
+            exchangeDuty={this.exchangeDuty}
+          />
         </div>
       );
     }
@@ -584,4 +622,91 @@ const users = [
     id: 20
   }
 ];
+const dutySchedule = [
+  {
+    date: "2018-05-16",
+    senior: users[0],
+    junior1: users[1],
+    junior2: users[2],
+  },
+  {
+    date: "2018-05-17",
+    senior: users[3],
+    junior1: users[4],
+    junior2: users[5],
+  },
+  {
+    date: "2018-05-18",
+    senior: users[6],
+    junior1: users[7],
+    junior2: users[8],
+  },
+  {
+    date: "2018-05-19",
+    senior: users[9],
+    junior1: users[10],
+    junior2: users[11],
+  },
+  {
+    date: "2018-05-20",
+    senior: users[12],
+    junior1: users[13],
+    junior2: users[14],
+  },
+  {
+    date: "2018-05-21",
+    senior: users[15],
+    junior1: users[16],
+    junior2: users[17],
+  },
+  {
+    date: "2018-05-22",
+    senior: users[18],
+    junior1: users[19],
+    junior2: users[20],
+  },
+  {
+    date: "2018-05-23",
+    senior: users[0],
+    junior1: users[1],
+    junior2: users[2],
+  },
+  {
+    date: "2018-05-24",
+    senior: users[3],
+    junior1: users[4],
+    junior2: users[5],
+  },
+  {
+    date: "2018-05-25",
+    senior: users[6],
+    junior1: users[7],
+    junior2: users[8],
+  },
+  {
+    date: "2018-05-26",
+    senior: users[9],
+    junior1: users[10],
+    junior2: users[11],
+  },
+  {
+    date: "2018-05-27",
+    senior: users[12],
+    junior1: users[13],
+    junior2: users[14],
+  },
+  {
+    date: "2018-05-28",
+    senior: users[15],
+    junior1: users[16],
+    junior2: users[17],
+  },
+  {
+    date: "2018-05-29",
+    senior: users[18],
+    junior1: users[19],
+    junior2: users[20],
+  }
+];
+
 export default App;
