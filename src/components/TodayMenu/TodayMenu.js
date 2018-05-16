@@ -11,8 +11,7 @@ class TodayMenu extends Component {
             todayUsers,
             index
         } = this.props;
-        let senior = [],
-            junior = [];
+        let senior = [], junior = [];
         junior = todayUsers.filter(user => {
             return user.skill === "junior";
         });

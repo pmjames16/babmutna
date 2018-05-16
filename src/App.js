@@ -9,12 +9,16 @@ import Login from "./components/Header/Login";
 import Alarm from "./components/Header/Alarm";
 import MyDuty from "./components/Duty/MyDuty";
 import ExchangeDuty from "./components/Duty/ExchangeDuty";
+import Setfirebase from "./components/Admin/SetFirebase";
+import { init as initFirebase } from "./firebase";
+import * as firebase from 'firebase'
 
 
 
 class App extends Component {
   constructor(props) {
     super(props);
+    initFirebase();
     this.state = {
       dinner_ready: "no",
       body: "Home",
@@ -22,7 +26,21 @@ class App extends Component {
       recipeId: -1, //The index of recipe
       recipeState: 0, //0 is whole recipe, 1 is detail, should set RecipeId
       todayRecipe: 0, //The index of recipe
-      users: users,
+      recipes: [{
+        name: "Chicken Curry",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb",
+        video: "https://www.youtube.com/watch?v=erHhYyqJq6A",
+        time: "2h 30min",
+        ingredients: ["default"],
+        tasks: [{task: "default", image: ""}]
+      }],
+      users: [{
+        name: "Babmutna",
+        image:
+          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait1.jpg?alt=media&token=ca4a4b01-493e-4a4a-a8ea-a750832a94cc",
+        skill: "senior",
+        id: 0
+      }],
       currentUser: {
         id: -1
       },
@@ -31,6 +49,32 @@ class App extends Component {
       dutySchedule: dutySchedule,
       exchangeDate: null
     };
+  }
+
+  componentDidMount() {
+    const database = firebase.database();
+    let users_ = [];
+    let recipes_ = [];
+    const promise1 = database.ref('/users/').once('value').then((snapshot) => {
+      const usersDummy = snapshot.val();
+      for (let key in usersDummy) {
+        const user = usersDummy[key];
+        users_.push(user);
+      }
+    });
+    const promise2 = database.ref('/recipes/').once('value').then((snapshot) => {
+      const recipesDummy = snapshot.val();
+      for (let key in recipesDummy) {
+        const recipe = recipesDummy[key];
+        recipes_.push(recipe);
+      }
+    });
+    Promise.all([promise1, promise2]).then(() => {
+      this.setState({
+        recipes: recipes_,
+        users: users_,
+      });
+    });
   }
 
   changeScreen = screen => {
@@ -42,33 +86,6 @@ class App extends Component {
     };
 
     this.setState(option);
-  };
-
-  toggleMenu = () => {
-    this.setState(prevState => {
-      return { menu: !prevState.menu };
-    });
-  };
-
-  handleDinnerReady = () => {
-    this.setState({
-      dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
-    });
-  };
-
-  selectRecipe = key => {
-    this.setState({
-      recipeState: 1,
-      recipeId: key
-    });
-  };
-
-  selectRecipeOtherMenu = key => {
-    this.setState({
-      recipeState: 1,
-      recipeId: key,
-      body: "RecipeTemplate"
-    });
   };
 
   exchangeDuty = date => {
@@ -85,6 +102,34 @@ class App extends Component {
     })
   };
 
+  toggleMenu = () => {
+      this.setState(prevState => {
+          return {menu: !prevState.menu};
+      });
+  };
+
+  handleDinnerReady = () => {
+      this.setState({
+          dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
+      });
+  };
+
+
+  selectRecipe = key => {
+    this.setState({
+      recipeState: 1,
+      recipeId: key
+    });
+  };
+
+  selectRecipeOtherMenu = key => {
+    this.setState({
+      recipeState: 1,
+      recipeId: key,
+      body: "RecipeTemplate"
+    });
+  };
+
   wholeRecipe = () => {
     this.setState({
       recipeState: 0,
@@ -96,7 +141,7 @@ class App extends Component {
   setCurrentUser = id => {
     if (id !== -1) {
       //Login
-      const currentUser = users.filter(user => {
+      const currentUser = this.state.users.filter(user => {
         return user.id === id;
       });
       if (currentUser.length < 1) {
@@ -132,6 +177,7 @@ class App extends Component {
     });
   };
 
+
   render() {
     let body = null;
     const {
@@ -142,7 +188,8 @@ class App extends Component {
       users,
       currentUser,
       dutySchedule,
-      exchangeDate
+      exchangeDate,
+      recipes
     } = this.state;
     const todayUsers = users.slice(0, 3);
 
@@ -198,281 +245,36 @@ class App extends Component {
       );
     }
 
-    return (
-      <div className="App">
-        <Header
-          toggleMenu={this.toggleMenu}
-          title={this.state.body}
-          users={users}
-          toggleLogin={this.toggleLogin}
-          toggleAlarm={this.toggleAlarm}
-          currentUser={currentUser}
-        />
-
-        {body}
-        {this.state.menu ? (
-          <Menu
-            user={currentUser}
-            changeScreen={this.changeScreen}
-            toggleMenu={this.toggleMenu}
+      return (
+        <div className="App">
+          <Header
+              toggleMenu={this.toggleMenu}
+              title={this.state.body}
+              users={users}
+              toggleLogin={this.toggleLogin}
+              toggleAlarm={this.toggleAlarm}
+              currentUser={currentUser}
           />
-        ) : null}
 
-        {this.state.login ? (
-          <Login users={users} setCurrentUser={this.setCurrentUser} />
-        ) : null}
-        {this.state.alarm ? (
-          <Alarm user={currentUser} setCurrentUser={this.setCurrentUser} />
-        ) : null}
-      </div>
-    );
-  }
+          {body}
+          {this.state.menu ? (
+              <Menu
+                  user={currentUser}
+                  changeScreen={this.changeScreen}
+                  toggleMenu={this.toggleMenu}
+              />
+          ) : null}
+
+          {this.state.login ? (
+              <Login users={users} setCurrentUser={this.setCurrentUser}/>
+          ) : null}
+          {this.state.alarm ? (
+              <Alarm user={currentUser} setCurrentUser={this.setCurrentUser}/>
+          ) : null}
+        </div>
+      );
+    }
 }
-const recipes = [
-  {
-    name: "Chicken Curry",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb",
-    video: "https://www.youtube.com/watch?v=erHhYyqJq6A",
-    time: "2h 30min",
-    ingredients: [
-      "extra-virgin olive oil",
-      "1 medium yellow onion, chopped",
-      "2 lb. boneless skinless chicken breasts",
-      "3 cloves garlic, minced",
-      "1 tbsp. freshly grated ginger",
-      "1 tsp. paprika",
-      "1 tsp. turmeric",
-      "1 tsp. coriander",
-      "1/2 tsp. cumin",
-      "15-oz. can crushed tomatoes",
-      "1/2 c. chicken broth",
-      "1/2 c. heavy cream",
-      "kosher salt",
-      "Freshly ground black pepper",
-      "Chopped fresh cilantro, for garnish",
-      "Basmati rice, cooked, for serving"
-    ],
-    tasks: [
-      {
-        task:
-          "In a large pot over medium-high heat, heat oil. Add onion and cook until softened and lightly golden, 5 to 7 minutes. Add chicken and sear until golden on all sides, 5 minutes more. Stir in garlic and ginger and cook until fragrant, 2 minutes more.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task1.jpg?alt=media&token=0502b373-a937-4a10-af73-d879a5426418"
-      },
-      {
-        task:
-          "Coat aromatics in spices and cook until very fragrant, less than a minute more. Pour in tomatoes and chicken broth and bring to a simmer.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task2.jpg?alt=media&token=b7e467e5-7525-45fd-a7a6-8477ca4c615c"
-      },
-      {
-        task:
-          "Stir in heavy cream, then season with salt and pepper. Simmer until chicken pieces are cooked through and tender, about 10 minutes.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task3.jpg?alt=media&token=deab4659-0268-478a-897c-254d8188b380"
-      },
-      {
-        task:
-          "Garnish with cilantro and serve over rice or with naan, with lemon wedges for squeezing.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb"
-      }
-    ]
-  },
-  {
-    name: "Hot Beef Curry",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/hot%20beef.jpg?alt=media&token=9c81aa80-bace-4920-b580-549660af606a",
-    video: "https://www.youtube.com/watch?v=SlA4d-UDMmg",
-    time: "2h 30min",
-    ingredients: [
-      "extra-virgin olive oil",
-      "1 medium yellow onion, chopped",
-      "2 lb. boneless skinless chicken breasts",
-      "3 cloves garlic, minced",
-      "1 tbsp. freshly grated ginger",
-      "1 tsp. paprika",
-      "1 tsp. turmeric",
-      "1 tsp. coriander",
-      "1/2 tsp. cumin",
-      "15-oz. can crushed tomatoes",
-      "1/2 c. chicken broth",
-      "1/2 c. heavy cream",
-      "kosher salt",
-      "Freshly ground black pepper",
-      "Chopped fresh cilantro, for garnish",
-      "Basmati rice, cooked, for serving"
-    ],
-    tasks: [
-      {
-        task:
-          "In a large pot over medium-high heat, heat oil. Add onion and cook until softened and lightly golden, 5 to 7 minutes. Add chicken and sear until golden on all sides, 5 minutes more. Stir in garlic and ginger and cook until fragrant, 2 minutes more.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task1.jpg?alt=media&token=0502b373-a937-4a10-af73-d879a5426418"
-      },
-      {
-        task:
-          "Coat aromatics in spices and cook until very fragrant, less than a minute more. Pour in tomatoes and chicken broth and bring to a simmer.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task2.jpg?alt=media&token=b7e467e5-7525-45fd-a7a6-8477ca4c615c"
-      },
-      {
-        task:
-          "Stir in heavy cream, then season with salt and pepper. Simmer until chicken pieces are cooked through and tender, about 10 minutes.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task3.jpg?alt=media&token=deab4659-0268-478a-897c-254d8188b380"
-      },
-      {
-        task:
-          "Garnish with cilantro and serve over rice or with naan, with lemon wedges for squeezing.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb"
-      }
-    ]
-  },
-  {
-    name: "Potato Curry",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/potato.jpg?alt=media&token=5a06cb37-f74d-47c7-b550-268402b02868",
-    video: "https://www.youtube.com/watch?v=E2cKLMBLloM",
-    time: "2h 30min",
-    ingredients: [
-      "extra-virgin olive oil",
-      "1 medium yellow onion, chopped",
-      "2 lb. boneless skinless chicken breasts",
-      "3 cloves garlic, minced",
-      "1 tbsp. freshly grated ginger",
-      "1 tsp. paprika",
-      "1 tsp. turmeric",
-      "1 tsp. coriander",
-      "1/2 tsp. cumin",
-      "15-oz. can crushed tomatoes",
-      "1/2 c. chicken broth",
-      "1/2 c. heavy cream",
-      "kosher salt",
-      "Freshly ground black pepper",
-      "Chopped fresh cilantro, for garnish",
-      "Basmati rice, cooked, for serving"
-    ],
-    tasks: [
-      {
-        task:
-          "In a large pot over medium-high heat, heat oil. Add onion and cook until softened and lightly golden, 5 to 7 minutes. Add chicken and sear until golden on all sides, 5 minutes more. Stir in garlic and ginger and cook until fragrant, 2 minutes more.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task1.jpg?alt=media&token=0502b373-a937-4a10-af73-d879a5426418"
-      },
-      {
-        task:
-          "Coat aromatics in spices and cook until very fragrant, less than a minute more. Pour in tomatoes and chicken broth and bring to a simmer.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task2.jpg?alt=media&token=b7e467e5-7525-45fd-a7a6-8477ca4c615c"
-      },
-      {
-        task:
-          "Stir in heavy cream, then season with salt and pepper. Simmer until chicken pieces are cooked through and tender, about 10 minutes.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task3.jpg?alt=media&token=deab4659-0268-478a-897c-254d8188b380"
-      },
-      {
-        task:
-          "Garnish with cilantro and serve over rice or with naan, with lemon wedges for squeezing.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb"
-      }
-    ]
-  },
-  {
-    name: "Beef Curry",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/beef%20curry.jpg?alt=media&token=a77281c5-f626-484b-9238-20e836b72017",
-    video: "https://www.youtube.com/watch?v=boVnoWfESKo",
-    time: "2h 30min",
-    ingredients: [
-      "extra-virgin olive oil",
-      "1 medium yellow onion, chopped",
-      "2 lb. boneless skinless chicken breasts",
-      "3 cloves garlic, minced",
-      "1 tbsp. freshly grated ginger",
-      "1 tsp. paprika",
-      "1 tsp. turmeric",
-      "1 tsp. coriander",
-      "1/2 tsp. cumin",
-      "15-oz. can crushed tomatoes",
-      "1/2 c. chicken broth",
-      "1/2 c. heavy cream",
-      "kosher salt",
-      "Freshly ground black pepper",
-      "Chopped fresh cilantro, for garnish",
-      "Basmati rice, cooked, for serving"
-    ],
-    tasks: [
-      {
-        task:
-          "In a large pot over medium-high heat, heat oil. Add onion and cook until softened and lightly golden, 5 to 7 minutes. Add chicken and sear until golden on all sides, 5 minutes more. Stir in garlic and ginger and cook until fragrant, 2 minutes more.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task1.jpg?alt=media&token=0502b373-a937-4a10-af73-d879a5426418"
-      },
-      {
-        task:
-          "Coat aromatics in spices and cook until very fragrant, less than a minute more. Pour in tomatoes and chicken broth and bring to a simmer.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task2.jpg?alt=media&token=b7e467e5-7525-45fd-a7a6-8477ca4c615c"
-      },
-      {
-        task:
-          "Stir in heavy cream, then season with salt and pepper. Simmer until chicken pieces are cooked through and tender, about 10 minutes.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/task3.jpg?alt=media&token=deab4659-0268-478a-897c-254d8188b380"
-      },
-      {
-        task:
-          "Garnish with cilantro and serve over rice or with naan, with lemon wedges for squeezing.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb"
-      }
-    ]
-  },
-  {
-    name: "Butter Chicken",
-    image:
-      "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/butterChicken.jpg?alt=media&token=67b1aa8d-536e-4a82-aad4-9fafdf115b7a",
-    video: "https://www.youtube.com/watch?v=a03U45jFxOI",
-    time: "2h 0min",
-    ingredients: [
-      "1 tablespoon peanut oil",
-      "1 shallot, finely chopped",
-      "1/4 white onion, chopped",
-      "2 tablespoons butter",
-      "2 teaspoons lemon juice",
-      "1 tablespoon ginger garlic paste",
-      "1 teaspoon garam masala",
-      "1 teaspoon chili powder",
-      "1 teaspoon ground cumin",
-      "1 bay leaf"
-    ],
-    tasks: [
-      {
-        task:
-          "Heat 1 tablespoon oil in a large saucepan over medium high heat. Saute shallot and onion until soft and translucent. Stir in butter, lemon juice, ginger-garlic paste, 1 teaspoon garam masala, chili powder, cumin and bay leaf. Cook, stirring, for 1 minute. Add tomato sauce, and cook for 2 minutes, stirring frequently. Stir in half-and-half and yogurt. Reduce heat to low, and simmer for 10 minutes, stirring frequently. Season with salt pepper. Remove from heat and set aside.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/taskbutter.jpg?alt=media&token=b6433b0a-dbf4-488f-b735-378e99e591a3"
-      },
-      {
-        task:
-          "Heat 1 tablespoon oil in a large heavy skillet over medium heat. Cook chicken until lightly browned, about 10 minutes. Reduce heat, and season with 1 teaspoon garam masala and cayenne. Stir in a few spoonfuls of sauce, and simmer until liquid has reduced, and chicken is no longer pink. Stir cooked chicken into sauce.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/taskbutter2.jpg?alt=media&token=b21eb8b9-d94f-4758-8cc9-f3eeb5d29b99"
-      },
-      {
-        task:
-          "Mix together cornstarch and water, then stir into the sauce. Cook for 5 to 10 minutes, or until thickened.",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/butterChicken.jpg?alt=media&token=67b1aa8d-536e-4a82-aad4-9fafdf115b7a"
-      }
-    ]
-  }
-];
 const users = [
   {
     name: "Arif Hadii",
