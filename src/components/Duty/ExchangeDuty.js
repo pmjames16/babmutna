@@ -9,7 +9,8 @@ class ExchangeDuty extends Component {
     this.state = {
       modalOn: 0,
       requestDates: [],
-      sendOn: 0
+      sendOn: 0,
+      selectedRequests: [],
     }
   };
 
@@ -17,29 +18,27 @@ class ExchangeDuty extends Component {
     this.setState({modalOn: 1})
   };
 
-  dateToString (date) {
-    const year = date.getYear() + 1900;
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    var monthS = month.toString();
-    var dayS = day.toString();
-    if (month < 10) {
-      monthS = "0" + monthS;
-    }
-    if (day < 10) {
-      dayS = "0" + dayS;
-    }
-    return year.toString() + "-" + monthS + "-" + dayS;
-  }
-
   selectDate = date => {
     let option = {};
     option['modalOn'] = 0;
+    const dutySchedule = this.props.dutySchedule;
+    const schedule = dutySchedule.filter(duty => {
+      return duty.date.getDate() === date.getDate();
+    })[0];
+    const senior = schedule.senior;
+    const junior1 = schedule.junior1;
+    const junior2 = schedule.junior2;
     this.setState(({requestDates})=>{
-        requestDates.push(date);
+        requestDates.push({date: date, senior: {user: senior, selected: 0}, junior1: {user: junior1, selected: 0}, junior2: {user: junior2, selected: 0}});
        option['requestDates'] = requestDates;
        return option;
     });
+  };
+
+  deleteDate = index => {
+    this.setState((prevState) => {
+      return {requestDates: prevState.requestDates.splice(index, 1)}
+    })
   };
 
   selectedDates () {
@@ -53,13 +52,31 @@ class ExchangeDuty extends Component {
     for (let i = 0 ; i < requestDates.length; i++) {
       view.push(
         <RequestDate
-          date={requestDates[i]}
+          date={requestDates[i].date}
           dutySchedule={dutySchedule}
+          deleteDate={()=>this.deleteDate(i)}
+          selectUser = {this.selectUser}
+          deselectUser = {this.deselectUser}
+          index = {i}
         />
       )
     }
     return view;
   }
+
+  selectUser = (index, userS) => {
+    this.setState(({requestDates}) => {
+      requestDates[index][userS].selected = 1;
+      return {requestDates: requestDates}
+    })
+  };
+
+  deselectUser = (index, userS) => {
+    this.setState(({requestDates}) => {
+      requestDates[index][userS].selected = 0;
+      return {requestDates: requestDates}
+    })
+  };
 
   addButton() {
     const {
@@ -83,11 +100,29 @@ class ExchangeDuty extends Component {
       requestDates
     } = this.state;
     const {
-      sendExchangeRequest
+      sendExchangeRequest,
+      currentUser,
+      exchangeDate
     } = this.props;
-    if (requestDates.length > 0) {
+    var numRequest = 0;
+    var requestList = [];
+    for (let i = 0; i < requestDates.length ; i++) {
+      if (requestDates[i].senior.selected === 1) {
+        requestList.push({from: currentUser, to: requestDates[i].senior.user, dateFrom: exchangeDate, dateTo: requestDates[i].date})
+        numRequest += 1;
+      }
+      if (requestDates[i].junior1.selected === 1) {
+        requestList.push({from: currentUser, to: requestDates[i].junior1.user, dateFrom: exchangeDate, dateTo: requestDates[i].date})
+        numRequest += 1;
+      }
+      if (requestDates[i].junior2.selected === 1) {
+        requestList.push({from: currentUser, to: requestDates[i].junior2.user, dateFrom: exchangeDate, dateTo: requestDates[i].date})
+        numRequest += 1;
+      }
+    }
+    if (numRequest > 0) {
       return (
-        <div className="send-button" onClick={() => sendExchangeRequest()}>
+        <div className="send-button" onClick={() => sendExchangeRequest(requestList)}>
         Send
       </div>
       );
@@ -101,10 +136,21 @@ class ExchangeDuty extends Component {
     }
   };
 
+  formatDate = (date) => {
+    let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  };
+
   render() {
     const {
       exchangeDate,
-      sendExchangeRequest
     } = this.props;
     const {
       modalOn,
@@ -117,7 +163,7 @@ class ExchangeDuty extends Component {
         <div className="exchange-wrapper">
           <div className="from-wrapper">
             <span className="myduty-text">My Duty</span>
-            <span className="myduty-date">{exchangeDate}</span>
+            <span className="myduty-date">{this.formatDate(exchangeDate)}</span>
           </div>
           <div className="selected-dates-wrapper">
             {this.selectedDates()}
@@ -126,7 +172,7 @@ class ExchangeDuty extends Component {
         </div>
         {this.sendButton()}
         <CalendarModal
-          disabledDates = {[exchangeDate].concat(requestDates.map(date=>new Date(date)))}
+          disabledDates = {[exchangeDate].concat(requestDates.map(x=>x.date))}
           visible = {modalOn}
           selectDate = {this.selectDate}
         />

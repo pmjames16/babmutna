@@ -1,0 +1,20 @@
+.request-noti-wrapper {
+    border: 1px solid black;
+
+}
+.row {
+    align: center;
+    text-align: center;
+}
+.accept-button {
+    background-color: lightseagreen;
+    color: white;
+    margin-left:0px;
+    width:98px;
+}
+.decline-button {
+    background-color: orangered;
+    color: white;
+    margin-left:0px;
+    width:98px;
+}
