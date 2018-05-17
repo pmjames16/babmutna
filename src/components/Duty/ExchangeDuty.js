@@ -33,12 +33,13 @@ class ExchangeDuty extends Component {
   }
 
   selectDate = date => {
-    var {
-      requestDates
-    } = this.state
-    this.setState({modalOn: 0})
-    requestDates.push(this.dateToString(date));
-    this.setState({requestDates: requestDates})
+    let option = {};
+    option['modalOn'] = 0;
+    this.setState(({requestDates})=>{
+        requestDates.push(date);
+       option['requestDates'] = requestDates;
+       return option;
+    });
   };
 
   selectedDates () {
@@ -47,8 +48,8 @@ class ExchangeDuty extends Component {
     } = this.state;
     const {
       dutySchedule
-    } = this.props
-    var view = [];
+    } = this.props;
+    let view = [];
     for (let i = 0 ; i < requestDates.length; i++) {
       view.push(
         <RequestDate

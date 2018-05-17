@@ -29,38 +29,12 @@ class CalendarTemplate extends Component {
     const { currentUser } = this.props;
     // const { current_position } = this.state;
     if (nextProps.currentUser.id !== currentUser.id && currentUser.id !== -1) {
-      //   window.scrollTo(0, 44 + 184 * current_pos);
-      // window.scrollTo({
-      //   top: 44 + 184 * current_pos,
-      //   left: 0,
-      //   behavior: "smooth"
-      // });
       this.setState({
         user_selected: currentUser.id
       });
     }
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps.currentUser.id !== this.props.currentUser.id) {
-  //     this.setState({
-  //       visited: -1
-  //     });
-  //     return true;
-  //   }
-  //   if (this.state.visited === -1) {
-  //     this.setState({
-  //       visited: 1
-  //     });
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-  // componentWillUnmount = () => {
-  //   this.setState({
-  //     visited: -1
-  //   });
-  // };
+
   toggleVisible = () => {
     const { visible } = this.state;
     visible === -1
@@ -71,6 +45,7 @@ class CalendarTemplate extends Component {
           visible: -1
         });
   };
+
   calendarMapping = () => {
     const { users, recipes, selectRecipeOtherMenu, currentUser } = this.props;
     const currentDate = new Date();
@@ -80,24 +55,20 @@ class CalendarTemplate extends Component {
       day.setDate(currentDate.getDate() + i);
       weeks.push(day);
     }
-    let bull = 0;
     const calendar_list = weeks.map((day, index) => {
       let dayUser = users.slice(
         (index * 3) % users.length,
         (index * 3) % users.length + 3
       );
       let count = 0;
-      let isme = -1;
+      //let isme = -1;
       while (dayUser.length < 3) {
         dayUser.push(users[count]);
         count++;
       }
       // dayUser.map(user => user.id === currentUser.id && (current_pos = bull));
-      dayUser.map(user => user.id === currentUser.id && (isme = 1));
-      bull++;
-      // if (isme === 1) {
-      //   return null;
-      // } else {
+      //dayUser.map(user => user.id === currentUser.id && (isme = 1));//TODO So what?
+
       return (
         <Calendar
           date={day}
@@ -113,6 +84,7 @@ class CalendarTemplate extends Component {
     });
     return calendar_list;
   };
+
   myCalendar = () => {
     const { users, recipes, selectRecipeOtherMenu, currentUser } = this.props;
     const currentDate = new Date();
@@ -122,7 +94,6 @@ class CalendarTemplate extends Component {
       day.setDate(currentDate.getDate() + i);
       weeks.push(day);
     }
-    let bull = 0;
     const calendar_list = weeks.map((day, index) => {
       let dayUser = users.slice(
         (index * 3) % users.length,
@@ -136,7 +107,6 @@ class CalendarTemplate extends Component {
       }
       // dayUser.map(user => user.id === currentUser.id && (current_pos = bull));
       dayUser.map(user => user.id === currentUser.id && (isme = 1));
-      bull++;
       if (isme === -1) {
         return null;
       } else {
