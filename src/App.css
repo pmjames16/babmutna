@@ -10,3 +10,7 @@
   align-items: center;
   font-family: Roboto;
 }
+
+.modal {
+  height: 600px;
+}
