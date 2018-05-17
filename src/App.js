@@ -18,6 +18,7 @@ class App extends Component {
     super(props);
     initFirebase();
     this.state = {
+      exchangeRequests: new Set([]),
       dinner_ready: "no",
       body: "Home",
       menu: false,
@@ -75,6 +76,7 @@ class App extends Component {
     });
   }
 
+
   changeScreen = screen => {
     let option = {
       body: screen,
@@ -93,11 +95,56 @@ class App extends Component {
     })
   };
 
-  sendExchangeRequest = () => {
+  sendExchangeRequest = (requestList) => {
     alert('Request Sent!');
-    this.setState({
-      body: "Home"
+    this.setState(({exchangeRequests})=> {
+      for (let i = 0; i < requestList.length; i++) {
+        exchangeRequests.add(requestList[i]);
+      }
+      return {exchangeRequests: exchangeRequests, body: "Home"};
+    });
+  };
+
+  declineRequest = (from,to,dateFrom,dateTo) => {
+    this.setState(({exchangeRequests}) => {
+      exchangeRequests.delete({from: from, to: to, dateFrom: dateFrom, dateTo: this.formatDate(dateTo)});
+      return {exchangeRequests: exchangeRequests};
     })
+  };
+
+  acceptRequest = (from,to,dateFrom,dateTo) => {
+    this.setState(({exchangeRequests, dutySchedule}) => {
+      exchangeRequests.forEach(function(i){
+        if (i.from === from, i.dateFrom  === dateFrom) {
+          exchangeRequests.delete(i);
+        }
+      });
+      for (let j = 0; j < dutySchedule.length; j++) {
+        if (dutySchedule[j].date === dateFrom) {
+          if (dutySchedule[j].senior === from) {
+            dutySchedule[j].senior = to;
+          }
+          else if (dutySchedule[j].junior1 === from) {
+            dutySchedule[j].junior1 = to;
+          }
+          else {
+            dutySchedule[j].junior2 = to;
+          }
+        }
+        else if (dutySchedule[j].date === dateTo) {
+          if (dutySchedule[j].senior === to) {
+            dutySchedule[j].senior = from;
+          }
+          else if (dutySchedule[j].junior1 === to) {
+            dutySchedule[j].junior1 = from;
+          }
+          else {
+            dutySchedule[j].junior2 = from;
+          }
+        }
+      }
+      return {exchangeRequests: exchangeRequests, dutySchedule: dutySchedule};
+    });
   };
 
   toggleMenu = () => {
@@ -176,21 +223,22 @@ class App extends Component {
   };
 
 
-    formatDate = (date) => {
-        let d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+  formatDate = (date) => {
+      let d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
 
-        if (month.length < 2) month = '0' + month;
-        if (day.length < 2) day = '0' + day;
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
 
-        return [year, month, day].join('-');
-    };
+      return [year, month, day].join('-');
+  };
 
   render() {
     let body = null;
     const {
+      exchangeRequests,
       dinner_ready,
       recipeId,
       recipeState,
@@ -202,7 +250,7 @@ class App extends Component {
       recipes
     } = this.state;
     const todayUsers = users.slice(0, 3);
-
+    console.log(exchangeRequests);
     if (this.state.body === "Calendar") {
       body = (
         <CalendarTemplate
@@ -210,6 +258,7 @@ class App extends Component {
           recipes={recipes}
           selectRecipeOtherMenu={this.selectRecipeOtherMenu}
           currentUser={currentUser}
+          dutySchedule={dutySchedule}
         />
       );
     } else if (this.state.body === "RecipeTemplate") {
@@ -223,12 +272,11 @@ class App extends Component {
         />
       );
     } else if (this.state.body === "Exchange Duty") {
-        const exchangeDateS = this.formatDate(exchangeDate);
       body = (
         <ExchangeDuty
           currentUser={currentUser}
           dutySchedule={dutySchedule}
-          exchangeDate={exchangeDateS}
+          exchangeDate={exchangeDate}
           sendExchangeRequest={this.sendExchangeRequest}
         />
       )
@@ -280,7 +328,13 @@ class App extends Component {
               <Login users={users} setCurrentUser={this.setCurrentUser}/>
           ) : null}
           {this.state.alarm ? (
-              <Alarm user={currentUser} setCurrentUser={this.setCurrentUser}/>
+              <Alarm
+                user={currentUser}
+                setCurrentUser={this.setCurrentUser}
+                acceptRequest={this.acceptRequest}
+                declineRequest={this.declineRequest}
+                exchangeRequests={exchangeRequests}
+              />
           ) : null}
         </div>
       );

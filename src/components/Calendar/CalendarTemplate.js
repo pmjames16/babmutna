@@ -45,108 +45,67 @@ class CalendarTemplate extends Component {
           visible: -1
         });
   };
-
-  calendarMapping = () => {
-    const { users, recipes, selectRecipeOtherMenu, currentUser } = this.props;
-    const currentDate = new Date();
-    let weeks = [];
-    for (let i = 0; i < 7; i++) {
-      let day = new Date();
-      day.setDate(currentDate.getDate() + i);
-      weeks.push(day);
-    }
-    const calendar_list = weeks.map((day, index) => {
-      let dayUser = users.slice(
-        (index * 3) % users.length,
-        (index * 3) % users.length + 3
-      );
-      let count = 0;
-      //let isme = -1;
-      while (dayUser.length < 3) {
-        dayUser.push(users[count]);
-        count++;
-      }
-      // dayUser.map(user => user.id === currentUser.id && (current_pos = bull));
-      //dayUser.map(user => user.id === currentUser.id && (isme = 1));//TODO So what?
-
-      return (
+  showCalendar () {
+    const { recipes, selectRecipeOtherMenu, currentUser, dutySchedule } = this.props;
+    var view = [];
+    for (let i = 0; i < dutySchedule.length; i++) {
+      view.push(
         <Calendar
-          date={day}
-          recipe={recipes[index % recipes.length]}
-          users={dayUser}
-          key={index}
-          recipeIndex={index % recipes.length}
+          date={dutySchedule[i].date}
+          recipe={recipes[i % recipes.length]}
+          users={[dutySchedule[i].senior, dutySchedule[i].junior1, dutySchedule[i].junior2]}
+          key={i}
+          recipeIndex={i % recipes.length}
           selectRecipeOtherMenu={selectRecipeOtherMenu}
           currentUser={currentUser}
         />
       );
-      // }
-    });
-    return calendar_list;
-  };
-
-  myCalendar = () => {
-    const { users, recipes, selectRecipeOtherMenu, currentUser } = this.props;
-    const currentDate = new Date();
-    let weeks = [];
-    for (let i = 0; i < 7; i++) {
-      let day = new Date();
-      day.setDate(currentDate.getDate() + i);
-      weeks.push(day);
     }
-    const calendar_list = weeks.map((day, index) => {
-      let dayUser = users.slice(
-        (index * 3) % users.length,
-        (index * 3) % users.length + 3
-      );
-      let count = 0;
-      let isme = -1;
-      while (dayUser.length < 3) {
-        dayUser.push(users[count]);
-        count++;
-      }
-      // dayUser.map(user => user.id === currentUser.id && (current_pos = bull));
-      dayUser.map(user => user.id === currentUser.id && (isme = 1));
-      if (isme === -1) {
-        return null;
-      } else {
-        return (
+    return view;
+  }
+  showMyCalendar () {
+    const { recipes, selectRecipeOtherMenu, currentUser, dutySchedule } = this.props;
+    var view = [];
+    for (let i = 0; i < dutySchedule.length; i++) {
+      if (dutySchedule[i].senior === currentUser || dutySchedule[i].junior1 === currentUser || dutySchedule[i].junior2 === currentUser) {
+        view.push(
           <Calendar
-            date={day}
-            recipe={recipes[index % recipes.length]}
-            users={dayUser}
-            key={index}
-            recipeIndex={index % recipes.length}
+            date={dutySchedule[i].date}
+            recipe={recipes[i % recipes.length]}
+            users={[dutySchedule[i].senior, dutySchedule[i].junior1, dutySchedule[i].junior2]}
+            key={i}
+            recipeIndex={i % recipes.length}
             selectRecipeOtherMenu={selectRecipeOtherMenu}
             currentUser={currentUser}
           />
         );
       }
-    });
-    return calendar_list;
-  };
+    }
+    return view;
+  }
+
 
   render() {
     // console.log(this.props.users[3].id, current_pos, this.state.user_selected);
     const { visible } = this.state;
-    const tot_cal = this.calendarMapping();
+    const tot_cal = this.showCalendar();
     return (
       <div className="calendar-template">
-        {this.myCalendar()}
-        <div className="calendar-mapping-wrapper">
-          {visible === -1 ? (
-            <div className="calendar-dropdown" onClick={this.toggleVisible}>
-              See the whold menu V
-            </div>
-          ) : (
-            <div>
-              <div className="calendar-dropdown" onClick={this.toggleVisible}>
-                Fold ^
-              </div>
-              {tot_cal}
-            </div>
-          )}
-        </div>
+        {tot_cal}
+        {/*<div className="calendar-mapping-wrapper">*/}
+          {/*{visible === -1 ? (*/}
+            {/*<div className="calendar-dropdown" onClick={this.toggleVisible}>*/}
+              {/*View All V*/}
+            {/*</div>*/}
+          {/*) : (*/}
+            {/*<div>*/}
+              {/*<div className="calendar-dropdown" onClick={this.toggleVisible}>*/}
+                {/*View Mine Only ^*/}
+              {/*</div>*/}
+              {/*{tot_cal}*/}
+            {/*</div>*/}
+          {/*)}*/}
+        {/*</div>*/}
       </div>
     );
   }
