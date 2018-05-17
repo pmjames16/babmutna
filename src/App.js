@@ -10,6 +10,8 @@ import Alarm from "./components/Header/Alarm";
 import MyDuty from "./components/Duty/MyDuty";
 import ExchangeDuty from "./components/Duty/ExchangeDuty";
 import Setfirebase from "./components/Admin/SetFirebase";
+import Modal from "./components/TodayMenu/Modal"
+
 import { init as initFirebase } from "./firebase";
 import * as firebase from 'firebase'
 
@@ -46,7 +48,8 @@ class App extends Component {
       login: false,
       alarm: false,
       dutySchedule: dutySchedule(),
-      exchangeDate: null
+      exchangeDate: null,
+      modal: false,
     };
   }
 
@@ -153,11 +156,19 @@ class App extends Component {
       });
   };
 
+  // handleDinnerReady = () => {
+  //     this.setState({
+  //         dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
+  //     });
+  // };
+
   handleDinnerReady = () => {
-      this.setState({
-          dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
-      });
+    this.state.dinner_ready==="yes"? this.setState({ dinner_ready: "no" }) : this.setState({ modal: true })
   };
+
+  modalButtonClick = (but) => {
+    but? this.setState({ dinner_ready: "yes", modal: false }) : this.setState({ modal: false })
+  }
 
 
   selectRecipe = key => {
@@ -305,7 +316,7 @@ class App extends Component {
     }
 
       return (
-        <div className="App">
+        <div className={`App ${this.state.modal? "modal" : ""}`}>
           <Header
               toggleMenu={this.toggleMenu}
               title={this.state.body}
@@ -315,7 +326,12 @@ class App extends Component {
               currentUser={currentUser}
           />
 
-          {body}
+          {this.state.modal? 
+            <Modal 
+              modalButtonClick={this.modalButtonClick}
+            /> 
+            : body}
+
           {this.state.menu ? (
               <Menu
                   user={currentUser}

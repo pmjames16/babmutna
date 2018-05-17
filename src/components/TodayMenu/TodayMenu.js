@@ -22,7 +22,7 @@ class TodayMenu extends Component {
         const month = date.getMonth() + 1;
         const dates = date.getDate();
         const day = date.getDay();
-
+        
         return (
             <div className="todaymenu-wrapper">
                 <div className="todaymenu-title-wrapper">
@@ -42,7 +42,7 @@ class TodayMenu extends Component {
                         onClick={onClickReady}
                         className={`todaymenu-dinner-${dinner_ready} dinner-ready`}
                     >
-                        {dinner_ready === "yes" ? "Dinner's Ready" : "Cooking Dinner"}
+                        {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
                     </div>
                     <div className="todaymenu-overlay">
                         <div className="todaymenu-recipe">{recipe.name}</div>
