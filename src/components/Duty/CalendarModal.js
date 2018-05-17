@@ -5,9 +5,6 @@ import Calendar from 'react-calendar';
 class CalendarModal extends Component {
   constructor(props) {
     super(props);
-    const {
-      visible
-    } = this.props
     this.state={
       date: new Date(),
       buttonDisabled: 1

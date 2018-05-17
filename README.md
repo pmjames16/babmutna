@@ -1,6 +1,7 @@
 # Babmutna
 
-The is a Babmutna Web client, implemented using [**React**](https://reactjs.org/). It can run on chrome, We don't consider any other browser. This is the **Design Project of** **CS374:Introduction to Human-Computer Interaction** made by Team Babmutna
+The is a Babmutna Web client, implemented using [**React**](https://reactjs.org/). It can run on chrome, We don't consider any other browser. It shoulde be used through the Galaxy S5 mode of Chrome Developer Tools. 
+This is the **Design Project of** **CS374:Introduction to Human-Computer Interaction** made by Team Babmutna.
 
 ## POV
 The POV of our project is that Pakistani students at KAIST need an integrated management system that provides an easy way to organize and coordinate their diets because they are a party of people with specific food restrictions who eat and cook together in large groups.

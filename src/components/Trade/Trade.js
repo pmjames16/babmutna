@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Trade.css";
-import CalendarModal from "./CalendarModal";
+import CalendarModal from "../Duty/CalendarModal";
 
 
 class Trade extends Component {

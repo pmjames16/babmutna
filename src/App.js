@@ -13,8 +13,6 @@ import Setfirebase from "./components/Admin/SetFirebase";
 import { init as initFirebase } from "./firebase";
 import * as firebase from 'firebase'
 
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +44,7 @@ class App extends Component {
       },
       login: false,
       alarm: false,
-      dutySchedule: dutySchedule,
+      dutySchedule: dutySchedule(),
       exchangeDate: null
     };
   }
@@ -96,7 +94,7 @@ class App extends Component {
   };
 
   sendExchangeRequest = () => {
-    alert('Request Sent!')
+    alert('Request Sent!');
     this.setState({
       body: "Home"
     })
@@ -178,6 +176,18 @@ class App extends Component {
   };
 
 
+    formatDate = (date) => {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    };
+
   render() {
     let body = null;
     const {
@@ -213,11 +223,12 @@ class App extends Component {
         />
       );
     } else if (this.state.body === "Exchange Duty") {
+        const exchangeDateS = this.formatDate(exchangeDate);
       body = (
         <ExchangeDuty
           currentUser={currentUser}
           dutySchedule={dutySchedule}
-          exchangeDate={exchangeDate}
+          exchangeDate={exchangeDateS}
           sendExchangeRequest={this.sendExchangeRequest}
         />
       )
@@ -424,91 +435,31 @@ const users = [
     id: 20
   }
 ];
-const dutySchedule = [
-  {
-    date: "2018-05-16",
-    senior: users[0],
-    junior1: users[1],
-    junior2: users[2],
-  },
-  {
-    date: "2018-05-17",
-    senior: users[3],
-    junior1: users[4],
-    junior2: users[5],
-  },
-  {
-    date: "2018-05-18",
-    senior: users[6],
-    junior1: users[7],
-    junior2: users[8],
-  },
-  {
-    date: "2018-05-19",
-    senior: users[9],
-    junior1: users[10],
-    junior2: users[11],
-  },
-  {
-    date: "2018-05-20",
-    senior: users[12],
-    junior1: users[13],
-    junior2: users[14],
-  },
-  {
-    date: "2018-05-21",
-    senior: users[15],
-    junior1: users[16],
-    junior2: users[17],
-  },
-  {
-    date: "2018-05-22",
-    senior: users[18],
-    junior1: users[19],
-    junior2: users[20],
-  },
-  {
-    date: "2018-05-23",
-    senior: users[0],
-    junior1: users[1],
-    junior2: users[2],
-  },
-  {
-    date: "2018-05-24",
-    senior: users[3],
-    junior1: users[4],
-    junior2: users[5],
-  },
-  {
-    date: "2018-05-25",
-    senior: users[6],
-    junior1: users[7],
-    junior2: users[8],
-  },
-  {
-    date: "2018-05-26",
-    senior: users[9],
-    junior1: users[10],
-    junior2: users[11],
-  },
-  {
-    date: "2018-05-27",
-    senior: users[12],
-    junior1: users[13],
-    junior2: users[14],
-  },
-  {
-    date: "2018-05-28",
-    senior: users[15],
-    junior1: users[16],
-    junior2: users[17],
-  },
-  {
-    date: "2018-05-29",
-    senior: users[18],
-    junior1: users[19],
-    junior2: users[20],
-  }
-];
+const dutySchedule = () => {
+    let schedules= [];
+    for(let i=0;i<14;i++){
+        let date = new Date();
+        date.setDate(date.getDate() + i);
+        let schedule;
+        if(i < 7) {
+            schedule = {
+                date: date,
+                senior: users[i * 3],
+                junior1: users[i * 3 + 1],
+                junior2: users[i * 3 + 2]
+            };
+        }else{
+            const j = i-7;
+            schedule = {
+                date: date,
+                senior: users[j * 3],
+                junior1: users[j * 3 + 1],
+                junior2: users[j * 3 + 2]
+            };
+        }
+        schedules.push(schedule);
+    }
+    return schedules;
+};
 
 export default App;

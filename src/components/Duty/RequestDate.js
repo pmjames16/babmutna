@@ -10,18 +10,34 @@ class RequestDate extends Component {
       junior2On: 0
     }
   }
+    formatDate = (date) => {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    };
   render () {
     const {
       date,
       dutySchedule
-    } = this.props
-    const senior = dutySchedule.filter(duty => duty.date === date)[0].senior;
-    const junior1 = dutySchedule.filter(duty => duty.date === date)[0].junior1;
-    const junior2 = dutySchedule.filter(duty => duty.date === date)[0].junior2;
+    } = this.props;
+    const schedule = dutySchedule.filter(duty => {
+        return duty.date.getDate() === date.getDate();
+    })[0];
+
+    console.log(schedule);
+    const senior = schedule.senior;
+    const junior1 = schedule.junior1;
+    const junior2 = schedule.junior2;
 
     return (
       <div className="request-date-wrapper">
-        <div className="request-date">{date}
+        <div className="request-date">{this.formatDate(date)}
         </div>
         <div className="request-user-wrapper" key={senior.name}>
           <img
