@@ -1,0 +1,49 @@
+.myduty-wrapper {
+    width: 344px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.myduty-header {
+    font-size: 24px;
+    font-weight: 500;
+    font-family: Roboto;
+    padding-left: 12px;
+    padding-top: 15px;
+    margin: 0 auto;
+}
+.slide-left {
+    align:left;
+    margin-right: 30px;
+}
+.slide-right {
+    align:right;
+    margin-left: 30px;
+}
+.content-wrapper {
+    padding-top: 5px;
+}
+.calendar-wrapper {
+    margin: 0 !important;
+    border: 0 !important;
+    box-shadow: none;
+}
+.exchange {
+    height: 35px;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 20px;
+    color: white;
+    background-color: #f59f00;
+    padding-top: 5px;
+}
+.exchange-icon {
+    margin-right: 10px;
+}
+
+.disabled {
+    color: lightgrey;
+}

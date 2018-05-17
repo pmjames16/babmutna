@@ -1,0 +1,74 @@
+.header-spacer {
+    width:360px;
+    height:45px;
+}
+.exchange-wrapper {
+    width: 344px;
+    height: 565px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.from-wrapper {
+    font-size: 24px;
+    font-weight: 500;
+    font-family: Roboto;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 15px;
+}
+.myduty-text {
+    float:left;
+}
+.myduty-date {
+    float:right;
+}
+.add-button {
+    padding-top: 50px;
+    color: grey;
+    width: 326px;
+    height: 140px;
+    font-size: 30px;
+    text-align: center;
+    flex-direction: column;
+    margin: 4px 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.add-icon {
+    margin-right: 10px;
+}
+.send-button {
+    position:fixed;
+    bottom: 20px;
+    left: 8px;
+    right: 8px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 8px;
+    background: lightseagreen;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    text-align: center;
+    padding-top: 5px;
+    font-size: 20px;
+    color: white;
+}
+.send-button-disabled {
+    position:fixed;
+    bottom: 20px;
+    left: 8px;
+    right: 8px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px 8px;
+    background: grey;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    text-align: center;
+    padding-top: 5px;
+    font-size: 20px;
+    color: white;
+}

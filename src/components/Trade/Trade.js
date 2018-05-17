@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Trade.css";
-import CalendarModal from "./CalendarModal";
+import CalendarModal from "../Duty/CalendarModal";
 
 
 class Trade extends Component {
@@ -14,7 +14,14 @@ class Trade extends Component {
       users,
       currentUser
     } = this.props;
-    const tradeUsers = [ users[3] ];
+    const isReady = users.length > 4;
+    const tradeUsers = isReady ? [ users[3] ]: [{
+        name: "Arif Hadii",
+        image:
+            "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait1.jpg?alt=media&token=ca4a4b01-493e-4a4a-a8ea-a750832a94cc",
+        skill: "senior",
+        id: 0
+    }];
 
     return (
       <div className="trade-wrapper">
