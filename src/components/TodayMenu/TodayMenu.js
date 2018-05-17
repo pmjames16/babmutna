@@ -42,7 +42,7 @@ class TodayMenu extends Component {
                         onClick={onClickReady}
                         className={`todaymenu-dinner-${dinner_ready} dinner-ready`}
                     >
-                        {dinner_ready === "yes" ? "Dinner's Ready" : "Cooking Dinner"}
+                        {dinner_ready === "yes" ? "Let's eat!" : "Now Cooking"}
                     </div>
                     <div className="todaymenu-overlay">
                         <div className="todaymenu-recipe">{recipe.name}</div>
