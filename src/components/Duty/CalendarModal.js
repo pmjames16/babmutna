@@ -45,7 +45,6 @@ class CalendarModal extends Component {
       disabledDates,
       visible,
     } = this.props;
-    const dates = disabledDates.map(d => new Date(d));
     const view = visible ? (
       <div className="modal-wrapper">
         <div className="modal-to">
@@ -56,8 +55,8 @@ class CalendarModal extends Component {
             minDate={new Date()}
             maxDate={new Date("2018-05-29")}
             tileDisabled={({date, view}) => {
-              for (let i = 0; i < dates.length; i++) {
-                if (dates[i].getDate() === date.getDate() && dates[i].getMonth() === date.getMonth() && dates[i].getYear() === date.getYear()) {
+              for (let i = 0; i < disabledDates.length; i++) {
+                if (disabledDates[i].getDate() === date.getDate() && disabledDates[i].getMonth() === date.getMonth() && disabledDates[i].getYear() === date.getYear()) {
                   return true;
                 }
               }
