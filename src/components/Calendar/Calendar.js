@@ -31,7 +31,7 @@ class Calendar extends Component {
     const days = date.getDate();
     const day = days_[date.getDay()];
     return (
-      <div className="calendar-wrapper">
+      <div className="calendar-wrapper-test">
         <div className="date">
           {month}/{days}
         </div>
