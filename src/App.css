@@ -1,5 +1,6 @@
 .App {
   width: 360px;
+    min-height: 620px;
   background: #F7F7F7;
   box-shadow: 0 2px 6px rgba(0,0,0,0.4);
   height: 100%;
