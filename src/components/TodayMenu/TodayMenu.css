@@ -105,6 +105,10 @@
   font-weight: 500;
 }
 
+.unclickable {
+  cursor: default;
+}
+
 .todaymenu-dinner-yes {
   background: #40c057;
   transition: .3s ease;

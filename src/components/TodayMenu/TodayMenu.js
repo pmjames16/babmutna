@@ -22,7 +22,16 @@ class TodayMenu extends Component {
         const month = date.getMonth() + 1;
         const dates = date.getDate();
         const day = date.getDay();
-        
+
+        console.log(this.props)
+        console.log(junior)
+
+        let right = false
+        todayUsers.map(user => {
+            if (user.name === this.props.currentUser.name) right = true
+        })
+        console.log('right', right)
+
         return (
             <div className="todaymenu-wrapper">
                 <div className="todaymenu-title-wrapper">
@@ -39,8 +48,8 @@ class TodayMenu extends Component {
                         alt={recipe.name}
                     />
                     <div
-                        onClick={onClickReady}
-                        className={`todaymenu-dinner-${dinner_ready} dinner-ready`}
+                        onClick={right? onClickReady : null}
+                        className={`todaymenu-dinner-${dinner_ready} dinner-ready ${right? 'clickable' : 'unclickable'}`}
                     >
                         {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
                     </div>

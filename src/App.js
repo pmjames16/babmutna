@@ -302,6 +302,7 @@ class App extends Component {
             dinner_ready={dinner_ready}
             selectRecipeOtherMenu={this.selectRecipeOtherMenu}
             onClickReady={this.handleDinnerReady}
+            currentUser={this.state.currentUser}
           />
           <MyDuty
             currentUser={currentUser}
