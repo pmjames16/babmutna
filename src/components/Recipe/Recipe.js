@@ -51,7 +51,12 @@ class Recipe extends Component {
             })
             // console.log("Same");
         }
+    }
 
+    componentWillUnmount(){
+        const { id } = this.props;
+        const recipeRef =  firebase.database().ref('/recipes_/'+id);
+        recipeRef.off();
     }
 
 
