@@ -1,21 +1,32 @@
 import React, { Component } from "react";
+import * as firebase from "firebase";
 
 class Ingredient extends Component {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
         this.state = {
-            isReady:false,
+            isReady:this.props.ingredient.done,
         }
     }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        return {isReady:nextProps.ingredient.done}
+    }
+
     onClick = ()=>{
-        this.setState((prevState)=>{
-            return {isReady:!prevState.isReady};
-        });
+        const {recipeIndex, recipeId,changeIngredient, ingredient, id} = this.props;
+        let newIngredient = {...ingredient};
+        newIngredient['done'] = !this.state.isReady;
+        changeIngredient(recipeIndex,newIngredient,id);
+        const database = firebase.database();
+        let updates = {};
+        updates['/recipes_/' + recipeId+"/ingredients/"+id] =newIngredient;
+        database.ref().update(updates);
     };
 
     render() {
-        const { ingredient } = this.props;
+        const ingredient = this.props.ingredient.ingredient;
         const readyStyle = this.state.isReady ? { "color":"gray"}:{};
         return (
             <div>
