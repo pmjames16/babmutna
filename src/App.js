@@ -19,6 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     initFirebase();
+    this.initRecipeState = this.initRecipeState.bind(this);
     this.state = {
       exchangeRequests: new Set([]),
       dinner_ready: "no",
@@ -28,13 +29,14 @@ class App extends Component {
       recipeState: 0, //0 is whole recipe, 1 is detail, should set RecipeId
       todayRecipe: 0, //The index of recipe
       recipes: [{
-        name: "Chicken Curry",
-        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb",
+        name: "Hot Beef Curry",
+        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/hot%20beef.jpg?alt=media&token=9c81aa80-bace-4920-b580-549660af606a",
         video: "https://www.youtube.com/watch?v=erHhYyqJq6A",
         time: "2h 30min",
         ingredients: ["default"],
         tasks: [{task: "default", image: ""}]
       }],
+        recipeKeys : [],
       users: [{
         name: "Babmutna",
         image:
@@ -57,6 +59,7 @@ class App extends Component {
     const database = firebase.database();
     let users_ = [];
     let recipes_ = [];
+      let recipeKeys_ = [];
     const promise1 = database.ref('/users/').once('value').then((snapshot) => {
       const usersDummy = snapshot.val();
       for (let key in usersDummy) {
@@ -64,21 +67,22 @@ class App extends Component {
         users_.push(user);
       }
     });
-    const promise2 = database.ref('/recipes/').once('value').then((snapshot) => {
+    const promise2 = database.ref('/recipes_/').once('value').then((snapshot) => {
       const recipesDummy = snapshot.val();
       for (let key in recipesDummy) {
         const recipe = recipesDummy[key];
         recipes_.push(recipe);
+          recipeKeys_.push(key)
       }
     });
     Promise.all([promise1, promise2]).then(() => {
       this.setState({
         recipes: recipes_,
         users: users_,
+          recipeKeys:recipeKeys_
       });
     });
   }
-
 
   changeScreen = screen => {
     let option = {
@@ -118,7 +122,7 @@ class App extends Component {
   acceptRequest = (from,to,dateFrom,dateTo) => {
     this.setState(({exchangeRequests, dutySchedule}) => {
       exchangeRequests.forEach(function(i){
-        if (i.from === from, i.dateFrom  === dateFrom) {
+        if (i.from === from &&  i.dateFrom  === dateFrom) {
           exchangeRequests.delete(i);
         }
       });
@@ -156,12 +160,6 @@ class App extends Component {
       });
   };
 
-  // handleDinnerReady = () => {
-  //     this.setState({
-  //         dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
-  //     });
-  // };
-
   handleDinnerReady = () => {
     this.state.dinner_ready==="yes"? this.setState({ dinner_ready: "no" }) : this.setState({ modal: true })
   };
@@ -170,7 +168,7 @@ class App extends Component {
     but? this.setState({ dinner_ready: "yes", modal: false }) : this.setState({ modal: false })
   }
 
-
+//About Recipe
   selectRecipe = key => {
     this.setState({
       recipeState: 1,
@@ -193,7 +191,35 @@ class App extends Component {
     });
   };
 
+  changeTask = (recipeIndex, task, taskId) => {
+      let recipes = Object.assign([],this.state.recipes);
+      console.log("recipes",recipeIndex,"tasks",taskId);
+      recipes[recipeIndex].tasks[taskId] = task;
+      this.setState({
+          recipes : recipes
+      });
+  };
 
+    changeIngredient = (recipeIndex, ingredient,ingredientId ) => {
+        let recipes = Object.assign([],this.state.recipes);
+        recipes[recipeIndex].ingredients[ingredientId] = ingredient;
+        this.setState({
+            recipes : recipes
+        });
+    };
+
+    initRecipeState = (recipeIndex,tasks,ingredients)=>{
+        let recipes = Object.assign([],this.state.recipes);
+        let recipe = recipes[recipeIndex];
+        recipe.ingredients = ingredients;
+        recipe.tasks = tasks;
+        this.setState({
+            recipes:recipes,
+        });
+    };
+    ////About Recipe End
+
+//About Login and profile
   setCurrentUser = id => {
     if (id !== -1) {
       //Login
@@ -232,7 +258,7 @@ class App extends Component {
       return { alarm: !alarm };
     });
   };
-
+//Abouyt Login and profile End
 
   formatDate = (date) => {
       let d = new Date(date),
@@ -261,7 +287,6 @@ class App extends Component {
       recipes
     } = this.state;
     const todayUsers = users.slice(0, 3);
-    console.log(exchangeRequests);
     if (this.state.body === "Calendar") {
       body = (
         <CalendarTemplate
@@ -272,17 +297,23 @@ class App extends Component {
           dutySchedule={dutySchedule}
         />
       );
-    } else if (this.state.body === "RecipeTemplate") {
+    }
+    else if (this.state.body === "RecipeTemplate") {
       body = (
         <RecipeTemplate
           recipes={recipes}
+          recipeKeys={this.state.recipeKeys}
           recipeState={recipeState}
           recipeId={recipeId}
           selectRecipe={this.selectRecipe}
+          initRecipeState = {this.initRecipeState}
           wholeRecipe={this.wholeRecipe}
+          changeTask = {this.changeTask}
+          changeIngredient = {this.changeIngredient}
         />
       );
-    } else if (this.state.body === "Exchange Duty") {
+    }
+    else if (this.state.body === "Exchange Duty") {
       body = (
         <ExchangeDuty
           currentUser={currentUser}
@@ -291,6 +322,14 @@ class App extends Component {
           sendExchangeRequest={this.sendExchangeRequest}
         />
       )
+    }
+    else if (this.state.body === "Admin") {
+        body = (
+            <Setfirebase
+                recipes = {this.state.recipes}
+                users = {this.state.users}
+            />
+        )
     }
     else {
       body = (
@@ -532,5 +571,4 @@ const dutySchedule = () => {
     }
     return schedules;
 };
-
 export default App;

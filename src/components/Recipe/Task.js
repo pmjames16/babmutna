@@ -1,23 +1,33 @@
 import React, { Component } from "react";
+import * as firebase from "firebase";
 
 class Task extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isDone:false,
+            isReady:false,
         }
     }
+    static getDerivedStateFromProps(nextProps, prevState){
+        return {isReady:nextProps.done};
+    }
 
-    onClick = () => {
-        this.setState(({isDone})=>{
-            return {isDone:!isDone};
-        });
+    onClick = ()=>{
+        const {recipeIndex, recipeId, changeTask, task, index} = this.props;
+        let newTask ={};
+        newTask['task']= task;
+        newTask['done'] = !this.state.isReady;
+        changeTask(recipeIndex,newTask,index);
+        const database = firebase.database();
+        let updates = {};
+        updates['/recipes_/' + recipeId+"/tasks/"+index] =newTask;
+        database.ref().update(updates);
     };
 
     render() {
         const {task, index} = this.props;
-        const readyStyle = this.state.isDone ? {color:"gray", opacity:0.8}:{};
-        const indexIcon = this.state.isDone ?
+        const readyStyle = this.state.isReady ? {color:"gray", opacity:0.8}:{};
+        const indexIcon = this.state.isReady ?
             (<i style={styles.checkIcon} className={"fa fa-check-circle"}/>) : (<span>{index+1}</span>);
         return (
             <div onClick={this.onClick} style={{margin:"10px 0px 20px 0px"}} key={index}>
