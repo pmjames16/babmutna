@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Task from "./Task";
 import Ingredients from "./Ingredients";
+import * as firebase from "firebase";
+
+
 class Recipe extends Component {
     constructor(props) {
         super(props);
@@ -8,6 +11,55 @@ class Recipe extends Component {
             state:0,//0 is ingrdients, 1 is task
         }
     }
+
+    componentDidMount(){
+        const { recipe, id,recipeIndex } = this.props;
+
+        if(this.props.recipe.date !== (new Date()).getDate()){
+            console.log("diff",this.props.recipe.date, (new Date()).getDate());
+            const database = firebase.database();
+            let updates = {};
+
+            let ingredients = recipe.ingredients.map((ingredient)=>{
+                let newIngredient = Object.assign({},ingredient);
+                newIngredient['done']=false;
+                return newIngredient;
+            });
+            let tasks = recipe.tasks.map((task)=>{
+                let newTask = Object.assign({},task);
+                newTask['done']=false;
+                return newTask
+            });
+            if(id) {
+                updates['/recipes_/' + id + "/date"] = new Date().getDate();
+                updates['/recipes_/' + id + "/tasks"] = tasks;
+                updates['/recipes_/' + id + "/ingredients"] = ingredients;
+                database.ref().update(updates).then(()=>{
+                    const recipeRef = database.ref('/recipes_/'+id);
+                    recipeRef.on('value',(snapshot) => {
+                        this.props.initRecipeState(recipeIndex, snapshot.val().tasks, snapshot.val().ingredients);
+                    })
+                });
+
+            }else{
+                console.error("What happen");
+            }
+        }else{
+            const recipeRef = firebase.database().ref('/recipes_/'+id);
+            recipeRef.on('value',(snapshot) => {
+                this.props.initRecipeState(recipeIndex, snapshot.val().tasks, snapshot.val().ingredients);
+            })
+            // console.log("Same");
+        }
+    }
+
+    componentWillUnmount(){
+        const { id } = this.props;
+        const recipeRef =  firebase.database().ref('/recipes_/'+id);
+        recipeRef.off();
+    }
+
+
     onClick = (state) => {
         this.setState({
            state:state,
@@ -15,9 +67,16 @@ class Recipe extends Component {
     };
 
     render() {
-        const { recipe, onClick, headerS } = this.props;
+        const { recipe, onClick, headerS, id, recipeIndex } = this.props;
         const mapTask = (task, index) => {
-            return <Task task={task} index={index} key={index} />;
+            return <Task
+                task={task.task}
+                done = {task.done}
+                index={index}
+                key={index}
+                changeTask = {this.props.changeTask}
+                recipeId = {id}
+                recipeIndex ={recipeIndex}/>;
         };
         const tasks = recipe.tasks.map(mapTask);
 
@@ -58,8 +117,11 @@ class Recipe extends Component {
                         <div>
                             <div hidden={this.state.state!==0} >
                                 <Ingredients
+                                    changeIngredient = {this.props.changeIngredient}
                                     ingredients={recipe.ingredients}
                                     hidden ={this.state.state===1}
+                                    recipeId = {id}
+                                    recipeIndex ={recipeIndex}
                                 />
                             </div>
                             <div hidden={this.state.state!==1}>

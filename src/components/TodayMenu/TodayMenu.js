@@ -23,14 +23,11 @@ class TodayMenu extends Component {
         const dates = date.getDate();
         const day = date.getDay();
 
-        console.log(this.props)
-        console.log(junior)
 
-        let right = false
+        let right = false;
         todayUsers.map(user => {
             if (user.name === this.props.currentUser.name) right = true
-        })
-        console.log('right', right)
+        });
 
         return (
             <div className="todaymenu-wrapper">

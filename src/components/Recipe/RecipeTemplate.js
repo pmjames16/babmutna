@@ -10,7 +10,8 @@ class RecipeTemplate extends Component {
       recipeState,
       recipeId,
       selectRecipe,
-      wholeRecipe
+      wholeRecipe,
+        recipeKeys
     } = this.props;
     const mapHeader = (recipe, index) => {
       return (
@@ -29,11 +30,17 @@ class RecipeTemplate extends Component {
     } else {
       const index = recipeId;
       const recipe = recipes[index];
+      const key = recipeKeys[index];
       view = <Recipe
           recipe={recipe}
-          id={index}
+          key = {key}
+          id={key}
+          recipeIndex = {index}
           onClick={wholeRecipe}
-          headerS = {styles.headerS}/>;
+          headerS = {styles.headerS}
+          changeTask = {this.props.changeTask}
+          changeIngredient = {this.props.changeIngredient}
+          initRecipeState = {this.props.initRecipeState}/>;
     }
 
     return (

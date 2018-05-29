@@ -43,14 +43,14 @@ class Menu extends Component {
               Recipe
             </a>
           </li>
-            {/*{<li>*/}
-                {/*<a*/}
-                    {/*className="menu-link"*/}
-                    {/*onClick={() => this.props.changeScreen("Admin")}*/}
-                {/*>*/}
-                    {/*Admin*/}
-                {/*</a>*/}
-            {/*</li>}*/}
+            <li>
+                <a
+                    className="menu-link"
+                    onClick={() => this.props.changeScreen("Admin")}
+                >
+                    Admin
+                </a>
+            </li>
         </ul>
       </div>
     );
