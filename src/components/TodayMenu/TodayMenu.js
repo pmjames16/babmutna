@@ -62,7 +62,7 @@ class TodayMenu extends Component {
           {/* <div className="toggle-box" onClick={e => clickReady(e)} /> */}
           <div
             className={`todaymenu-dinner-${dinner_ready} dinner-ready${
-              right ? "-none" : " clickable"
+              right ? " clickable" : " unclickable"
             }`}
           >
             {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
