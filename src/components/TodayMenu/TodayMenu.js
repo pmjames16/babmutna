@@ -3,27 +3,32 @@ import "./TodayMenu.css";
 
 
 class TodayMenu extends Component {
-    render() {
-        const {
-            dinner_ready,
-            onClickReady,
-            recipe,
-            selectRecipeOtherMenu,
-            todayUsers,
-            index
-        } = this.props;
-        let senior = [], junior = [];
-        junior = todayUsers.filter(user => {
-            return user.skill === "junior";
-        });
-        senior = todayUsers.filter(user => {
-            return user.skill === "senior";
-        });
-        const date = new Date();
-        const month = date.getMonth() + 1;
-        const dates = date.getDate();
-        const day = date.getDay();
+  render() {
+    const {
+      dinner_ready,
+      onClickReady,
+      recipe,
+      selectRecipeOtherMenu,
+      todayUsers,
+      index
+    } = this.props;
+    let senior = [],
+      junior = [];
+    junior = todayUsers.filter(user => {
+      return user.skill === "junior";
+    });
+    senior = todayUsers.filter(user => {
+      return user.skill === "senior";
+    });
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const dates = date.getDate();
+    const day = date.getDay();
 
+    let right = false;
+    todayUsers.map(user => {
+      if (user.name === this.props.currentUser.name) right = true;
+    });
 
         let right = false;
         todayUsers.map(user => {
@@ -98,13 +103,13 @@ class TodayMenu extends Component {
     }
 }
 const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
 ];
 
 export default TodayMenu;
