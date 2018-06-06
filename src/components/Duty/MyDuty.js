@@ -121,7 +121,7 @@ class MyDuty extends Component {
         if (currentUser.id === -1) {
             return (
                 <div className="myduty-wrapper">
-                    <div className="myduty-title">Login to view your Duty</div>
+                    <div className="myduty-notloggedin">Login to view your Duty</div>
                 </div>
             );
         }
