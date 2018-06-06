@@ -165,9 +165,7 @@ class ExchangeDuty extends Component {
             <span className="myduty-text">My Duty</span>
             <span className="myduty-date">{this.formatDate(exchangeDate)}</span>
           </div>
-          <div className="selected-dates-wrapper">
-            {this.selectedDates()}
-          </div>
+          {this.selectedDates()}
           {this.addButton()}
         </div>
         {this.sendButton()}
