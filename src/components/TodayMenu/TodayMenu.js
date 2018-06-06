@@ -46,9 +46,9 @@ class TodayMenu extends Component {
           />
           <div
             onClick={right ? onClickReady : null}
-            className={`todaymenu-dinner-${dinner_ready} dinner-ready ${
-              right ? "clickable" : "unclickable"
-            }`}
+            className={`todaymenu-dinner-${
+              dinner_ready === "yes" ? "yes" : right ? "clickable-no" : "no"
+            } dinner-ready ${right ? "clickable" : "unclickable"}`}
           >
             {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
           </div>
