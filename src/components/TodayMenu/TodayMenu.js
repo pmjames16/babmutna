@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./TodayMenu.css";
 
-
 class TodayMenu extends Component {
   render() {
     const {
@@ -30,77 +29,82 @@ class TodayMenu extends Component {
       if (user.name === this.props.currentUser.name) right = true;
     });
 
-        let right = false;
-        todayUsers.map(user => {
-            if (user.name === this.props.currentUser.name) right = true
-        });
-
-        function clickReady (e) {
-            console.log(e)
-            // onClickReady()
-        }
-
-        return (
-            <div className="todaymenu-wrapper">
-                <div className="todaymenu-title-wrapper">
-                    <div className="todaymenu-title">Today's Menu</div>
-                    <div className="todaymenu-date">
-                        {`0${month}`}/{dates}
-                    </div>
-                </div>
-                <div className="todaymenu-recipe-wrapper">
-                    <img
-                        onClick={() => selectRecipeOtherMenu(index)}
-                        className="todaymenu-image"
-                        src={recipe.image}
-                        alt={recipe.name}
-                    />
-                    <input className={`toggle${right? '' : '-none'}`} size="large" type="checkbox" data-toggle="toggle" 
-                        data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger"/>
-                    <div className="toggle-box" onClick={e => clickReady(e)}></div>
-                    <div
-                        className={`todaymenu-dinner-${dinner_ready} dinner-ready${right? '-none' : ' clickable'}`}
-                    >
-                        {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
-                    </div>
-                    <div className="todaymenu-overlay">
-                        <div className="todaymenu-recipe">{recipe.name}</div>
-                        <div className="todaymenu-day">{days[day]}</div>
-                    </div>
-                </div>
-                <div className="todaymenu-users-wrapper">
-                    <div className="todaymenu-user-title">Senior Chef</div>
-                    <div className="todaymenu-user-wrapper-wrapper">
-                        {senior.map(user => (
-                            <div className="todaymenu-user-wrapper" key={user.name}>
-                                <img
-                                    className="todaymenu-user-image"
-                                    src={user.image}
-                                    alt={user.name}
-                                />
-                                <div className="todaymenu-user-name">{user.name}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                <div className="todaymenu-users-wrapper">
-                    <div className="todaymenu-user-title">Junior Chef</div>
-                    <div className="todaymenu-user-wrapper-wrapper">
-                        {junior.map(user => (
-                            <div className="todaymenu-user-wrapper" key={user.name}>
-                                <img
-                                    className="todaymenu-user-image"
-                                    src={user.image}
-                                    alt={user.name}
-                                />
-                                <div className="todaymenu-user-name">{user.name}</div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
+    function clickReady(e) {
+      console.log(e);
+      // onClickReady()
     }
+
+    return (
+      <div className="todaymenu-wrapper">
+        <div className="todaymenu-title-wrapper">
+          <div className="todaymenu-title">Today's Menu</div>
+          <div className="todaymenu-date">
+            {`0${month}`}/{dates}
+          </div>
+        </div>
+        <div className="todaymenu-recipe-wrapper">
+          <img
+            onClick={() => selectRecipeOtherMenu(index)}
+            className="todaymenu-image"
+            src={recipe.image}
+            alt={recipe.name}
+          />
+          {/* <input
+            className={`toggle${right ? "" : "-none"}`}
+            size="large"
+            type="checkbox"
+            data-toggle="toggle"
+            data-on="Ready"
+            data-off="Not Ready"
+            data-onstyle="success"
+            data-offstyle="danger"
+          /> */}
+          {/* <div className="toggle-box" onClick={e => clickReady(e)} /> */}
+          <div
+            className={`todaymenu-dinner-${dinner_ready} dinner-ready${
+              right ? "-none" : " clickable"
+            }`}
+          >
+            {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
+          </div>
+          <div className="todaymenu-overlay">
+            <div className="todaymenu-recipe">{recipe.name}</div>
+            <div className="todaymenu-day">{days[day]}</div>
+          </div>
+        </div>
+        <div className="todaymenu-users-wrapper">
+          <div className="todaymenu-user-title">Senior Chef</div>
+          <div className="todaymenu-user-wrapper-wrapper">
+            {senior.map(user => (
+              <div className="todaymenu-user-wrapper" key={user.name}>
+                <img
+                  className="todaymenu-user-image"
+                  src={user.image}
+                  alt={user.name}
+                />
+                <div className="todaymenu-user-name">{user.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="todaymenu-users-wrapper">
+          <div className="todaymenu-user-title">Junior Chef</div>
+          <div className="todaymenu-user-wrapper-wrapper">
+            {junior.map(user => (
+              <div className="todaymenu-user-wrapper" key={user.name}>
+                <img
+                  className="todaymenu-user-image"
+                  src={user.image}
+                  alt={user.name}
+                />
+                <div className="todaymenu-user-name">{user.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 const days = [
   "Sunday",
