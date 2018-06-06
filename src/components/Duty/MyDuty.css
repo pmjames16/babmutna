@@ -1,5 +1,6 @@
 .myduty-wrapper {
     width: 344px;
+    height:237px;
     display: flex;
     flex-direction: column;
     margin: 10px 8px;
@@ -8,11 +9,11 @@
 }
 
 .myduty-header {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 500;
     font-family: Roboto;
     padding-left: 12px;
-    padding-top: 15px;
+    padding-top: 5px;
     margin: 0 auto;
 }
 .slide-left {
@@ -24,7 +25,8 @@
     margin-left: 30px;
 }
 .content-wrapper {
-    padding-top: 5px;
+    padding-top: 0px;
+    margin-left: -8px;
 }
 .calendar-wrapper {
     margin: 0 !important;
@@ -46,4 +48,17 @@
 
 .disabled {
     color: lightgrey;
+}
+
+.calendar-wrapper-test {
+    box-shadow: none;
+    margin-top: -5px;
+    margin-bottom: 0px;
+
+}
+
+.myduty-notloggedin {
+    padding-top: 100px;
+    font-size: 20px;
+    text-align: center;
 }

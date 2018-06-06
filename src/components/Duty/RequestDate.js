@@ -80,7 +80,9 @@ class RequestDate extends Component {
               alt={senior.name}
             />
             <div className="request-user-name">{senior.name}</div>
+            <i class="fas fa-check added"></i>
           </div>
+      
         );
       }
       else {
@@ -92,6 +94,7 @@ class RequestDate extends Component {
               alt={senior.name}
             />
             <div className="request-user-name">{senior.name}</div>
+            <i class="fas fa-plus add"></i>
           </div>
         );
       }
@@ -106,6 +109,7 @@ class RequestDate extends Component {
               alt={junior1.name}
             />
             <div className="request-user-name">{junior1.name}</div>
+            <i class="fas fa-check added"></i>
           </div>
         );
       }
@@ -118,6 +122,7 @@ class RequestDate extends Component {
               alt={junior1.name}
             />
             <div className="request-user-name">{junior1.name}</div>
+            <i class="fas fa-plus add"></i>            
           </div>
         );
       }
@@ -132,6 +137,7 @@ class RequestDate extends Component {
               alt={junior2.name}
             />
             <div className="request-user-name">{junior2.name}</div>
+            <i class="fas fa-check added"></i>
           </div>
         );
       }
@@ -144,6 +150,7 @@ class RequestDate extends Component {
               alt={junior2.name}
             />
             <div className="request-user-name">{junior2.name}</div>
+            <i class="fas fa-plus add"></i>
           </div>
         );
       }
