@@ -103,7 +103,57 @@
   color:white;
   font-size: 16px;
   font-weight: 500;
+  z-index: 11;
 }
+
+.dinner-ready-none {
+  display: none;
+}
+
+
+.dinner-ready-toggle {
+  position: relative;
+  width: 140px;
+  z-index: 10;
+  padding: 0;
+  height: 36px;
+  padding-right: 23px;
+  top: -198px;
+  display: flex;
+  margin-left: 210px;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.toggle-box {
+  position: absolute;
+  height: 35px;
+  width: 105px;
+  top: 122px;
+  margin-left: 215px;
+  z-index: 20;
+}
+
+.toggle {
+  width: 500px;
+  position: relative;
+  top: -197px;
+  float: right;
+  z-index: 10;
+}
+
+.toggle-none {
+  display: none;
+  z-index: -100;
+}
+
+.none {
+  display: none;
+}
+
 
 .unclickable {
   cursor: default;

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./TodayMenu.css";
 
+
 class TodayMenu extends Component {
     render() {
         const {
@@ -29,6 +30,11 @@ class TodayMenu extends Component {
             if (user.name === this.props.currentUser.name) right = true
         });
 
+        function clickReady (e) {
+            console.log(e)
+            // onClickReady()
+        }
+
         return (
             <div className="todaymenu-wrapper">
                 <div className="todaymenu-title-wrapper">
@@ -44,9 +50,11 @@ class TodayMenu extends Component {
                         src={recipe.image}
                         alt={recipe.name}
                     />
+                    <input className={`toggle${right? '' : '-none'}`} size="large" type="checkbox" data-toggle="toggle" 
+                        data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger"/>
+                    <div className="toggle-box" onClick={e => clickReady(e)}></div>
                     <div
-                        onClick={right? onClickReady : null}
-                        className={`todaymenu-dinner-${dinner_ready} dinner-ready ${right? 'clickable' : 'unclickable'}`}
+                        className={`todaymenu-dinner-${dinner_ready} dinner-ready${right? '-none' : ' clickable'}`}
                     >
                         {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
                     </div>
