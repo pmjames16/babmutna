@@ -160,42 +160,47 @@ class App extends Component {
 
   declineRequest = (from, to, dateFrom, dateTo) => {
     this.setState(({ exchangeRequests }) => {
-      exchangeRequests.delete({
-        from: from,
-        to: to,
-        dateFrom: dateFrom,
-        dateTo: this.formatDate(dateTo)
+      exchangeRequests.forEach((i) => {
+        if (i.from.id === from.id && this.formatDate(i.dateFrom) === this.formatDate(dateFrom) && i.to.id === to.id) {
+          exchangeRequests.delete(i);
+        }
       });
       return { exchangeRequests: exchangeRequests };
     });
   };
 
   acceptRequest = (from, to, dateFrom, dateTo) => {
+    dateFrom = this.formatDate(dateFrom);
+    dateTo = this.formatDate(dateTo);
     this.setState(({ exchangeRequests, dutySchedule }) => {
-      exchangeRequests.forEach(function(i) {
-        if (i.from === from && i.dateFrom === dateFrom) {
-          exchangeRequests.delete(i);
-        }
-      });
+      console.log(exchangeRequests)
       for (let j = 0; j < dutySchedule.length; j++) {
-        if (dutySchedule[j].date === dateFrom) {
-          if (dutySchedule[j].senior === from) {
+        if (this.formatDate(dutySchedule[j].date) === dateFrom) {
+          if (dutySchedule[j].senior.id === from.id) {
             dutySchedule[j].senior = to;
-          } else if (dutySchedule[j].junior1 === from) {
+          } else if (dutySchedule[j].junior1.id === from.id) {
             dutySchedule[j].junior1 = to;
           } else {
             dutySchedule[j].junior2 = to;
           }
-        } else if (dutySchedule[j].date === dateTo) {
-          if (dutySchedule[j].senior === to) {
+        }
+      }
+      for (let j = 0; j < dutySchedule.length; j++) { 
+        if (this.formatDate(dutySchedule[j].date) === dateTo) {
+          if (dutySchedule[j].senior.id === to.id) {
             dutySchedule[j].senior = from;
-          } else if (dutySchedule[j].junior1 === to) {
+          } else if (dutySchedule[j].junior1.id === to.id) {
             dutySchedule[j].junior1 = from;
           } else {
             dutySchedule[j].junior2 = from;
           }
         }
       }
+      exchangeRequests.forEach((i) => {
+        if (i.from === from && this.formatDate(i.dateFrom) === this.formatDate(dateFrom)) {
+          exchangeRequests.delete(i);
+        }
+      });
       return { exchangeRequests: exchangeRequests, dutySchedule: dutySchedule };
     });
   };

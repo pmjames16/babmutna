@@ -15,6 +15,7 @@ class Login extends Component {
 
 const styles = {
     loginWrapper: {
+        zIndex: 100,
         position:"fixed",
         width:100,
         top:54,

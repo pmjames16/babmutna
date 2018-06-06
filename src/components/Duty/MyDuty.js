@@ -27,7 +27,7 @@ class MyDuty extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         let option = {};
         const nextUser = nextProps.currentUser;
-        if(nextUser.id !== prevState.currentUser.id){
+        //if(nextUser.id !== prevState.currentUser.id){
             option['currentUser'] = nextUser;
             if(nextUser.id !== -1){
                 const mySchedule = nextProps.dutySchedule.filter(day => {
@@ -38,8 +38,8 @@ class MyDuty extends Component {
                 option['numDuty'] = numDuty;
             }
             return option;
-        }
-        else return null;
+        //}
+        //else return null;
     }
 
     prevDuty = () => {
@@ -97,7 +97,7 @@ class MyDuty extends Component {
             selectRecipeOtherMenu,
         } = this.props;
         const {currentUser,mySchedule} = this.state;
-        let index = 2;
+        let index = 1;
         let duties = [];
         duties.push(
             <Calendar className={"duty " + this.state.dutyIndex.toString()}
