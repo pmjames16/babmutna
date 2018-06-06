@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./MyDuty.css";
-import Calendar from "../Calendar/Calendar"
+import Calendar from "../Calendar/Calendar";
 
 class MyDuty extends Component {
     constructor(props) {
@@ -42,106 +42,108 @@ class MyDuty extends Component {
         //else return null;
     }
 
-    prevDuty = () => {
-        let option = {};
-        if (this.state.dutyIndex <= 1) {
-            option['prevOn'] = 0;
-        }
-        option['nextOn'] = 1;
-        this.setState(({dutyIndex})=>{
-            return {dutyIndex: dutyIndex - 1,...option};
-        });
-    };
 
-    nextDuty = () => {
-        const {
-            numDuty,
-        } = this.state;
-        let option = {};
-        if (this.state.dutyIndex >= numDuty - 2) {
-            option["nextOn"] = 0;
-        }
-        option['prevOn'] = 1;
-        this.setState(({dutyIndex})=>{
-            return {dutyIndex: dutyIndex + 1,...option};
-        });
-    };
-
-    prevButton  = () => {
-        const {
-            prevOn,
-        } = this.state;
-        if (prevOn === 1) {
-            return (<i className="slide-left fas fa-chevron-left" onClick={this.prevDuty}></i>);
-        }
-        else {
-            return (<i className="slide-left disabled fas fa-chevron-left"></i>)
-        }
-    };
-
-    nextButton  = () => {
-        const {
-            nextOn
-        } = this.state;
-        if (nextOn === 1) {
-            return (<i className="slide-right fas fa-chevron-right" onClick={this.nextDuty}></i>);
-        }
-        else {
-            return (<i className="slide-right disabled fas fa-chevron-right"></i>)
-        }
-    };
-
-    duty = () => {
-        const {
-            recipes,
-            selectRecipeOtherMenu,
-        } = this.props;
-        const {currentUser,mySchedule} = this.state;
-        let index = 1;
-        let duties = [];
-        duties.push(
-            <Calendar className={"duty " + this.state.dutyIndex.toString()}
-                      date={new Date(mySchedule[this.state.dutyIndex].date)}
-                      recipe={recipes[index % recipes.length]}
-                      users={[mySchedule[this.state.dutyIndex].senior, mySchedule[this.state.dutyIndex].junior1, mySchedule[this.state.dutyIndex].junior2]}
-                      recipeIndex={index % recipes.length}
-                      selectRecipeOtherMenu={selectRecipeOtherMenu}
-                      currentUser={currentUser}
-                      key={index}
-            />
-        );
-        return duties
-    };
-
-    render() {
-        const {
-            currentUser,
-            exchangeDuty
-        } = this.props;
-        if (currentUser.id === -1) {
-            return (
-                <div className="myduty-wrapper">
-                    <div className="myduty-notloggedin">Login to view your Duty</div>
-                </div>
-            );
-        }
-        else {
-            return (
-                <div className="myduty-wrapper">
-                    <div className="myduty-header">
-                        {this.prevButton()} My Duty {this.nextButton()}
-                    </div>
-                    <div className="content-wrapper">
-                        {this.duty()}
-                    </div>
-                    <div className="exchange" onClick={() => exchangeDuty(this.state.mySchedule[this.state.dutyIndex].date)} >
-                        <i className="exchange-icon fas fa-retweet" ></i>
-                        Exchange Duty
-                    </div>
-                </div>
-            );
-        }
+  prevDuty = () => {
+    let option = {};
+    if (this.state.dutyIndex <= 1) {
+      option["prevOn"] = 0;
     }
+    option["nextOn"] = 1;
+    this.setState(({ dutyIndex }) => {
+      return { dutyIndex: dutyIndex - 1, ...option };
+    });
+  };
+
+  nextDuty = () => {
+    const { numDuty } = this.state;
+    let option = {};
+    if (this.state.dutyIndex >= numDuty - 2) {
+      option["nextOn"] = 0;
+    }
+    option["prevOn"] = 1;
+    this.setState(({ dutyIndex }) => {
+      return { dutyIndex: dutyIndex + 1, ...option };
+    });
+  };
+
+  prevButton = () => {
+    const { prevOn } = this.state;
+    if (prevOn === 1) {
+      return (
+        <i className="slide-left fas fa-chevron-left" onClick={this.prevDuty} />
+      );
+    } else {
+      return <i className="slide-left disabled fas fa-chevron-left" />;
+    }
+  };
+
+
+  nextButton = () => {
+    const { nextOn } = this.state;
+    if (nextOn === 1) {
+      return (
+        <i
+          className="slide-right fas fa-chevron-right"
+          onClick={this.nextDuty}
+        />
+      );
+    } else {
+      return <i className="slide-right disabled fas fa-chevron-right" />;
+    }
+  };
+
+  duty = () => {
+    const { recipes, selectRecipeOtherMenu } = this.props;
+    const { currentUser, mySchedule } = this.state;
+    let index = 0;
+    let duties = [];
+    duties.push(
+      <Calendar
+        className={"duty " + this.state.dutyIndex.toString()}
+        date={new Date(mySchedule[this.state.dutyIndex].date)}
+        recipe={recipes[index % recipes.length]}
+        users={[
+          mySchedule[this.state.dutyIndex].senior,
+          mySchedule[this.state.dutyIndex].junior1,
+          mySchedule[this.state.dutyIndex].junior2
+        ]}
+        recipeIndex={index % recipes.length}
+        selectRecipeOtherMenu={selectRecipeOtherMenu}
+        currentUser={currentUser}
+        key={index}
+      />
+    );
+    return duties;
+  };
+
+  render() {
+    const { currentUser, exchangeDuty } = this.props;
+    if (currentUser.id === -1) {
+      return (
+        <div className="myduty-wrapper">
+          <div className="myduty-notloggedin">Login to view your Duty</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="myduty-wrapper">
+          <div className="myduty-header">
+            {this.prevButton()} My Duty {this.nextButton()}
+          </div>
+          <div className="content-wrapper">{this.duty()}</div>
+          <div
+            className="exchange"
+            onClick={() =>
+              exchangeDuty(this.state.mySchedule[this.state.dutyIndex].date)
+            }
+          >
+            <i className="exchange-icon fas fa-retweet" />
+            Exchange Duty
+          </div>
+        </div>
+      );
+    }
+  }
 }
 
 export default MyDuty;

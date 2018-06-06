@@ -2,6 +2,25 @@ import React, { Component } from "react";
 import "./TodayMenu.css";
 
 class TodayMenu extends Component {
+  state = {
+    yes: "Dinner Ready!",
+    no: "Now Cooking"
+  };
+
+  handleClick = () => {
+    this.setState({
+      yes: "Not Today's Chef!",
+      no: "Not Today's Chef!"
+    });
+    setTimeout(
+      () =>
+        this.setState({
+          yes: "Dinner Ready!",
+          no: "Now Cooking"
+        }),
+      2000
+    );
+  };
   render() {
     const {
       dinner_ready,
@@ -11,6 +30,8 @@ class TodayMenu extends Component {
       todayUsers,
       index
     } = this.props;
+    const { yes, no } = this.state;
+    const { handleClick } = this;
     let senior = [],
       junior = [];
     junior = todayUsers.filter(user => {
@@ -61,11 +82,12 @@ class TodayMenu extends Component {
           /> */}
           {/* <div className="toggle-box" onClick={e => clickReady(e)} /> */}
           <div
-            className={`todaymenu-dinner-${dinner_ready} dinner-ready${
-              right ? "-none" : " clickable"
-            }`}
+            onClick={right ? onClickReady : handleClick}
+            className={`todaymenu-dinner-${
+              dinner_ready === "yes" ? "yes" : right ? "clickable-no" : "no"
+            } dinner-ready ${right ? "clickable" : "unclickable"}`}
           >
-            {dinner_ready === "yes" ? "Dinner Ready!" : "Now Cooking"}
+            {dinner_ready === "yes" ? yes : no}
           </div>
           <div className="todaymenu-overlay">
             <div className="todaymenu-recipe">{recipe.name}</div>

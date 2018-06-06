@@ -160,17 +160,29 @@
   cursor: default;
 }
 
+.todaymenu-dinner-clickable-no {
+  background: #f03e3e;
+  animation:myfirst 1s;
+  -moz-animation:myfirst 1s infinite; /* Firefox */
+  -webkit-animation:myfirst 1s infinite;
+}
+
+@-moz-keyframes myfirst /* Firefox */ {
+  0% {opacity: 1;}
+  50% {opacity: 0.8;}
+  100% {opacity: 1;}
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */ {
+  0% {opacity: 1;}
+  50% {opacity: 0.8;}
+  100% {opacity: 1;}
+}
+
 .todaymenu-dinner-yes {
   background: #40c057;
-  transition: .3s ease;
 }
-.todaymenu-dinner-yes:hover {
-  background:#2b8a3e;
-}
+
 .todaymenu-dinner-no {
   background: #f03e3e;
-  transition: .3s ease;
-}
-.todaymenu-dinner-no:hover {
-  background: #c92a2a;
 }
