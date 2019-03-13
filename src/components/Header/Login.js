@@ -15,6 +15,7 @@ class Login extends Component {
 
 const styles = {
     loginWrapper: {
+        zIndex: 100,
         position:"fixed",
         width:100,
         top:54,
@@ -22,7 +23,8 @@ const styles = {
         backgroundColor:"white",
         boxShadow: "0 1px 3px rgba(0,0,0,0.4)",
         fontFamily: "Roboto",
-        textAlign:"right"
+        textAlign:"right",
+        zIndex: "20"
     },
     loginName:{
         fontWeight:400,

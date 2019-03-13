@@ -10,15 +10,16 @@ import Alarm from "./components/Header/Alarm";
 import MyDuty from "./components/Duty/MyDuty";
 import ExchangeDuty from "./components/Duty/ExchangeDuty";
 import Setfirebase from "./components/Admin/SetFirebase";
-import Modal from "./components/TodayMenu/Modal"
+import Modal from "./components/TodayMenu/Modal";
 
 import { init as initFirebase } from "./firebase";
-import * as firebase from 'firebase'
+import * as firebase from "firebase";
 
 class App extends Component {
   constructor(props) {
     super(props);
     initFirebase();
+    this.initRecipeState = this.initRecipeState.bind(this);
     this.state = {
       exchangeRequests: new Set([]),
       dinner_ready: "no",
@@ -27,21 +28,27 @@ class App extends Component {
       recipeId: -1, //The index of recipe
       recipeState: 0, //0 is whole recipe, 1 is detail, should set RecipeId
       todayRecipe: 0, //The index of recipe
-      recipes: [{
-        name: "Chicken Curry",
-        image: "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/chicken%20curry.jpg?alt=media&token=e9180a59-4f75-4db2-9ebd-9540f97fc5cb",
-        video: "https://www.youtube.com/watch?v=erHhYyqJq6A",
-        time: "2h 30min",
-        ingredients: ["default"],
-        tasks: [{task: "default", image: ""}]
-      }],
-      users: [{
-        name: "Babmutna",
-        image:
-          "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait1.jpg?alt=media&token=ca4a4b01-493e-4a4a-a8ea-a750832a94cc",
-        skill: "senior",
-        id: 0
-      }],
+      recipes: [
+        {
+          name: "Hot Beef Curry",
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/hot%20beef.jpg?alt=media&token=9c81aa80-bace-4920-b580-549660af606a",
+          video: "https://www.youtube.com/watch?v=erHhYyqJq6A",
+          time: "2h 30min",
+          ingredients: ["default"],
+          tasks: [{ task: "default", image: "" }]
+        }
+      ],
+      recipeKeys: [],
+      users: [
+        {
+          name: "Babmutna",
+          image:
+            "https://firebasestorage.googleapis.com/v0/b/babmutna-536bf.appspot.com/o/portrait1.jpg?alt=media&token=ca4a4b01-493e-4a4a-a8ea-a750832a94cc",
+          skill: "senior",
+          id: 0
+        }
+      ],
       currentUser: {
         id: -1
       },
@@ -49,7 +56,7 @@ class App extends Component {
       alarm: false,
       dutySchedule: dutySchedule(),
       exchangeDate: null,
-      modal: false,
+      modal: false
     };
   }
 
@@ -57,28 +64,71 @@ class App extends Component {
     const database = firebase.database();
     let users_ = [];
     let recipes_ = [];
-    const promise1 = database.ref('/users/').once('value').then((snapshot) => {
-      const usersDummy = snapshot.val();
-      for (let key in usersDummy) {
-        const user = usersDummy[key];
-        users_.push(user);
-      }
-    });
-    const promise2 = database.ref('/recipes/').once('value').then((snapshot) => {
-      const recipesDummy = snapshot.val();
-      for (let key in recipesDummy) {
-        const recipe = recipesDummy[key];
-        recipes_.push(recipe);
-      }
-    });
-    Promise.all([promise1, promise2]).then(() => {
+    let recipeKeys_ = [];
+    let ready_ = "no";
+    const promise1 = database
+      .ref("/users/")
+      .once("value")
+      .then(snapshot => {
+        const usersDummy = snapshot.val();
+        for (let key in usersDummy) {
+          const user = usersDummy[key];
+          users_.push(user);
+        }
+      });
+    const promise2 = database
+      .ref("/recipes_/")
+      .once("value")
+      .then(snapshot => {
+        const recipesDummy = snapshot.val();
+        for (let key in recipesDummy) {
+          const recipe = recipesDummy[key];
+          recipes_.push(recipe);
+          recipeKeys_.push(key);
+        }
+      });
+
+    const promise3 = database
+      .ref("/ready/")
+      .once("value")
+      .then(snapshot => {
+        const ready = snapshot.val();
+        const today = new Date().getDate();
+        if (ready.date !== today) {
+          const database = firebase.database();
+          let updates = {};
+          let newReady = { ready: false, date: today };
+          updates["/ready/"] = newReady;
+          database.ref().update(updates);
+        } else {
+          if (ready.ready) {
+            ready_ = "yes";
+          }
+        }
+      });
+
+    Promise.all([promise1, promise2, promise3]).then(() => {
       this.setState({
         recipes: recipes_,
         users: users_,
+        recipeKeys: recipeKeys_,
+        dinner_ready: ready_
+      });
+      const readyRef = firebase.database().ref("/ready/");
+      readyRef.on("value", snapshot => {
+        const ready = snapshot.val();
+        const today = new Date().getDate();
+        let newReady = "no";
+        if (ready.date === today) newReady = ready.ready ? "yes" : "no";
+        this.setState({ dinner_ready: newReady });
       });
     });
   }
 
+  componentWillUnmount() {
+    const readyRef = firebase.database().ref("/ready/");
+    readyRef.off();
+  }
 
   changeScreen = screen => {
     let option = {
@@ -95,82 +145,101 @@ class App extends Component {
     this.setState({
       body: "Exchange Duty",
       exchangeDate: date
-    })
-  };
-
-  sendExchangeRequest = (requestList) => {
-    alert('Request Sent!');
-    this.setState(({exchangeRequests})=> {
-      for (let i = 0; i < requestList.length; i++) {
-        exchangeRequests.add(requestList[i]);
-      }
-      return {exchangeRequests: exchangeRequests, body: "Home"};
     });
   };
 
-  declineRequest = (from,to,dateFrom,dateTo) => {
-    this.setState(({exchangeRequests}) => {
-      exchangeRequests.delete({from: from, to: to, dateFrom: dateFrom, dateTo: this.formatDate(dateTo)});
-      return {exchangeRequests: exchangeRequests};
-    })
+  sendExchangeRequest = requestList => {
+    alert("Request Sent!");
+    this.setState(({ exchangeRequests }) => {
+      for (let i = 0; i < requestList.length; i++) {
+        exchangeRequests.add(requestList[i]);
+      }
+      return { exchangeRequests: exchangeRequests, body: "Home" };
+    });
   };
 
-  acceptRequest = (from,to,dateFrom,dateTo) => {
-    this.setState(({exchangeRequests, dutySchedule}) => {
-      exchangeRequests.forEach(function(i){
-        if (i.from === from, i.dateFrom  === dateFrom) {
+  declineRequest = (from, to, dateFrom, dateTo) => {
+    this.setState(({ exchangeRequests }) => {
+      exchangeRequests.forEach((i) => {
+        if (i.from.id === from.id && this.formatDate(i.dateFrom) === this.formatDate(dateFrom) && i.to.id === to.id) {
           exchangeRequests.delete(i);
         }
       });
+      return { exchangeRequests: exchangeRequests };
+    });
+  };
+
+  acceptRequest = (from, to, dateFrom, dateTo) => {
+    dateFrom = this.formatDate(dateFrom);
+    dateTo = this.formatDate(dateTo);
+    this.setState(({ exchangeRequests, dutySchedule }) => {
+      console.log(exchangeRequests)
       for (let j = 0; j < dutySchedule.length; j++) {
-        if (dutySchedule[j].date === dateFrom) {
-          if (dutySchedule[j].senior === from) {
+        if (this.formatDate(dutySchedule[j].date) === dateFrom) {
+          if (dutySchedule[j].senior.id === from.id) {
             dutySchedule[j].senior = to;
-          }
-          else if (dutySchedule[j].junior1 === from) {
+          } else if (dutySchedule[j].junior1.id === from.id) {
             dutySchedule[j].junior1 = to;
-          }
-          else {
+          } else {
             dutySchedule[j].junior2 = to;
           }
         }
-        else if (dutySchedule[j].date === dateTo) {
-          if (dutySchedule[j].senior === to) {
+      }
+      for (let j = 0; j < dutySchedule.length; j++) { 
+        if (this.formatDate(dutySchedule[j].date) === dateTo) {
+          if (dutySchedule[j].senior.id === to.id) {
             dutySchedule[j].senior = from;
-          }
-          else if (dutySchedule[j].junior1 === to) {
+          } else if (dutySchedule[j].junior1.id === to.id) {
             dutySchedule[j].junior1 = from;
-          }
-          else {
+          } else {
             dutySchedule[j].junior2 = from;
           }
         }
       }
-      return {exchangeRequests: exchangeRequests, dutySchedule: dutySchedule};
+      exchangeRequests.forEach((i) => {
+        if (i.from === from && this.formatDate(i.dateFrom) === this.formatDate(dateFrom)) {
+          exchangeRequests.delete(i);
+        }
+      });
+      return { exchangeRequests: exchangeRequests, dutySchedule: dutySchedule };
     });
   };
 
   toggleMenu = () => {
-      this.setState(prevState => {
-          return {menu: !prevState.menu};
-      });
+    this.setState(prevState => {
+      return { menu: !prevState.menu };
+    });
   };
-
-  // handleDinnerReady = () => {
-  //     this.setState({
-  //         dinner_ready: this.state.dinner_ready === "yes" ? "no" : "yes"
-  //     });
-  // };
 
   handleDinnerReady = () => {
-    this.state.dinner_ready==="yes"? this.setState({ dinner_ready: "no" }) : this.setState({ modal: true })
+    if (this.state.dinner_ready === "yes") {
+      this.setState({ dinner_ready: "no" });
+      const database = firebase.database();
+      let updates = {};
+      const today = new Date().getDate();
+      let newReady = { ready: false, date: today };
+      updates["/ready/"] = newReady;
+      database.ref().update(updates);
+    } else {
+      this.setState({ modal: true });
+    }
   };
 
-  modalButtonClick = (but) => {
-    but? this.setState({ dinner_ready: "yes", modal: false }) : this.setState({ modal: false })
-  }
+  modalButtonClick = but => {
+    if (but) {
+      this.setState({ dinner_ready: "yes", modal: false });
+      const database = firebase.database();
+      let updates = {};
+      const today = new Date().getDate();
+      let newReady = { ready: true, date: today };
+      updates["/ready/"] = newReady;
+      database.ref().update(updates);
+    } else {
+      this.setState({ modal: false });
+    }
+  };
 
-
+  //About Recipe
   selectRecipe = key => {
     this.setState({
       recipeState: 1,
@@ -193,7 +262,35 @@ class App extends Component {
     });
   };
 
+  changeTask = (recipeIndex, task, taskId) => {
+    let recipes = Object.assign([], this.state.recipes);
+    console.log("recipes", recipeIndex, "tasks", taskId);
+    recipes[recipeIndex].tasks[taskId] = task;
+    this.setState({
+      recipes: recipes
+    });
+  };
 
+  changeIngredient = (recipeIndex, ingredient, ingredientId) => {
+    let recipes = Object.assign([], this.state.recipes);
+    recipes[recipeIndex].ingredients[ingredientId] = ingredient;
+    this.setState({
+      recipes: recipes
+    });
+  };
+
+  initRecipeState = (recipeIndex, tasks, ingredients) => {
+    let recipes = Object.assign([], this.state.recipes);
+    let recipe = recipes[recipeIndex];
+    recipe.ingredients = ingredients;
+    recipe.tasks = tasks;
+    this.setState({
+      recipes: recipes
+    });
+  };
+  ////About Recipe End
+
+  //About Login and profile
   setCurrentUser = id => {
     if (id !== -1) {
       //Login
@@ -232,18 +329,24 @@ class App extends Component {
       return { alarm: !alarm };
     });
   };
+  //Abouyt Login and profile End
 
+  formatDate = date => {
+    let d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-  formatDate = (date) => {
-      let d = new Date(date),
-          month = '' + (d.getMonth() + 1),
-          day = '' + d.getDate(),
-          year = d.getFullYear();
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-      if (month.length < 2) month = '0' + month;
-      if (day.length < 2) day = '0' + day;
+    return [year, month, day].join("-");
+  };
 
-      return [year, month, day].join('-');
+  _handleHome = () => {
+    this.setState({
+      body: "Home"
+    });
   };
 
   render() {
@@ -261,7 +364,6 @@ class App extends Component {
       recipes
     } = this.state;
     const todayUsers = users.slice(0, 3);
-    console.log(exchangeRequests);
     if (this.state.body === "Calendar") {
       body = (
         <CalendarTemplate
@@ -276,10 +378,14 @@ class App extends Component {
       body = (
         <RecipeTemplate
           recipes={recipes}
+          recipeKeys={this.state.recipeKeys}
           recipeState={recipeState}
           recipeId={recipeId}
           selectRecipe={this.selectRecipe}
+          initRecipeState={this.initRecipeState}
           wholeRecipe={this.wholeRecipe}
+          changeTask={this.changeTask}
+          changeIngredient={this.changeIngredient}
         />
       );
     } else if (this.state.body === "Exchange Duty") {
@@ -290,9 +396,12 @@ class App extends Component {
           exchangeDate={exchangeDate}
           sendExchangeRequest={this.sendExchangeRequest}
         />
-      )
-    }
-    else {
+      );
+    } else if (this.state.body === "Admin") {
+      body = (
+        <Setfirebase recipes={this.state.recipes} users={this.state.users} />
+      );
+    } else {
       body = (
         <div>
           <TodayMenu
@@ -302,6 +411,7 @@ class App extends Component {
             dinner_ready={dinner_ready}
             selectRecipeOtherMenu={this.selectRecipeOtherMenu}
             onClickReady={this.handleDinnerReady}
+            currentUser={this.state.currentUser}
           />
           <MyDuty
             currentUser={currentUser}
@@ -315,46 +425,47 @@ class App extends Component {
       );
     }
 
-      return (
-        <div className={`App ${this.state.modal? "modal" : ""}`}>
-          <Header
-              toggleMenu={this.toggleMenu}
-              title={this.state.body}
-              users={users}
-              toggleLogin={this.toggleLogin}
-              toggleAlarm={this.toggleAlarm}
-              currentUser={currentUser}
+    return (
+      <div className={`App ${this.state.modal ? "modal" : ""}`}>
+        <Header
+          toggleMenu={this.toggleMenu}
+          title={this.state.body}
+          users={users}
+          toggleLogin={this.toggleLogin}
+          toggleAlarm={this.toggleAlarm}
+          currentUser={currentUser}
+          handleHome={this._handleHome}
+        />
+
+        {this.state.modal ? (
+          <Modal modalButtonClick={this.modalButtonClick} />
+        ) : (
+          body
+        )}
+
+        {this.state.menu ? (
+          <Menu
+            user={currentUser}
+            changeScreen={this.changeScreen}
+            toggleMenu={this.toggleMenu}
           />
+        ) : null}
 
-          {this.state.modal? 
-            <Modal 
-              modalButtonClick={this.modalButtonClick}
-            /> 
-            : body}
-
-          {this.state.menu ? (
-              <Menu
-                  user={currentUser}
-                  changeScreen={this.changeScreen}
-                  toggleMenu={this.toggleMenu}
-              />
-          ) : null}
-
-          {this.state.login ? (
-              <Login users={users} setCurrentUser={this.setCurrentUser}/>
-          ) : null}
-          {this.state.alarm ? (
-              <Alarm
-                user={currentUser}
-                setCurrentUser={this.setCurrentUser}
-                acceptRequest={this.acceptRequest}
-                declineRequest={this.declineRequest}
-                exchangeRequests={exchangeRequests}
-              />
-          ) : null}
-        </div>
-      );
-    }
+        {this.state.login ? (
+          <Login users={users} setCurrentUser={this.setCurrentUser} />
+        ) : null}
+        {this.state.alarm ? (
+          <Alarm
+            user={currentUser}
+            setCurrentUser={this.setCurrentUser}
+            acceptRequest={this.acceptRequest}
+            declineRequest={this.declineRequest}
+            exchangeRequests={exchangeRequests}
+          />
+        ) : null}
+      </div>
+    );
+  }
 }
 const users = [
   {
@@ -506,30 +617,29 @@ const users = [
   }
 ];
 const dutySchedule = () => {
-    let schedules= [];
-    for(let i=0;i<14;i++){
-        let date = new Date();
-        date.setDate(date.getDate() + i);
-        let schedule;
-        if(i < 7) {
-            schedule = {
-                date: date,
-                senior: users[i * 3],
-                junior1: users[i * 3 + 1],
-                junior2: users[i * 3 + 2]
-            };
-        }else{
-            const j = i-7;
-            schedule = {
-                date: date,
-                senior: users[j * 3],
-                junior1: users[j * 3 + 1],
-                junior2: users[j * 3 + 2]
-            };
-        }
-        schedules.push(schedule);
+  let schedules = [];
+  for (let i = 0; i < 14; i++) {
+    let date = new Date();
+    date.setDate(date.getDate() + i);
+    let schedule;
+    if (i < 7) {
+      schedule = {
+        date: date,
+        senior: users[i * 3],
+        junior1: users[i * 3 + 1],
+        junior2: users[i * 3 + 2]
+      };
+    } else {
+      const j = i - 7;
+      schedule = {
+        date: date,
+        senior: users[j * 3],
+        junior1: users[j * 3 + 1],
+        junior2: users[j * 3 + 2]
+      };
     }
-    return schedules;
+    schedules.push(schedule);
+  }
+  return schedules;
 };
-
 export default App;
